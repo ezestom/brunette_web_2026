@@ -1,3 +1,17 @@
+@font-face {
+  font-family: "Brunette Serif";
+  src: url("/assets/InstrumentSerif-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Brunette Serif";
+  src: url("/assets/InstrumentSerif-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
 .admin-page {
   background: #f4f3ee;
   color: #20362d;
@@ -22,19 +36,32 @@
   flex-direction: column;
 }
 .admin-wordmark {
-  font-size: 2.65rem;
-  letter-spacing: -0.08em;
-  line-height: 0.85;
-  font-weight: 600;
   display: block;
+  text-decoration: none;
+  color: #f4eee5;
 }
-.admin-wordmark span {
-  font-size: 0.58rem;
+.admin-wordmark .brand-title {
+  font-family: "Brunette Serif", "Times New Roman", serif;
+  font-size: 2.75rem;
+  letter-spacing: -0.025em;
+  line-height: 0.95;
+  font-weight: 400;
+  display: block;
+  text-transform: none;
+}
+.admin-wordmark .brand-italic {
+  font-style: italic;
+}
+.admin-wordmark .admin-tagline {
+  font-family: Apfel, Arial, sans-serif;
+  font-size: 0.62rem;
   font-weight: 300;
   letter-spacing: 0.04em;
   display: block;
-  margin-top: 14px;
-  opacity: 0.65;
+  margin-top: 8px;
+  opacity: 0.7;
+  text-transform: none;
+  line-height: 1;
 }
 .admin-sidebar > nav {
   display: flex;
@@ -848,8 +875,8 @@
     height: auto;
     padding: 22px 20px;
   }
-  .admin-sidebar .admin-wordmark {
-    font-size: 2rem;
+  .admin-sidebar .admin-wordmark .brand-title {
+    font-size: 2.1rem;
   }
   .admin-sidebar > nav {
     margin: 25px 0 0;

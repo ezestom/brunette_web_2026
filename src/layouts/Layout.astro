@@ -114,14 +114,30 @@ const links = [
         aria-label={`${settings.name}, inicio`}
       >
         <div class:list={["Logo_Dark", !hero && "Shown"]}>
-          <span class="brand-title">{settings.name.toLowerCase()}</span>
+          <span class="brand-title header-brand-wordmark">
+            {
+              footerWordmark.map((part) => (
+                <span class:list={[part.italic && "brand-italic"]}>
+                  {part.text}
+                </span>
+              ))
+            }
+          </span>
           <span class="brand-tagline">{settings.tagline}</span>
         </div>
         <div
           class:list={["Logo_Light", hero && "Shown"]}
           aria-hidden="true"
         >
-          <span class="brand-title">{settings.name.toLowerCase()}</span>
+          <span class="brand-title header-brand-wordmark">
+            {
+              footerWordmark.map((part) => (
+                <span class:list={[part.italic && "brand-italic"]}>
+                  {part.text}
+                </span>
+              ))
+            }
+          </span>
           <span class="brand-tagline">{settings.tagline}</span>
         </div>
       </a>
@@ -201,7 +217,15 @@ const links = [
           class="Logo brand-wordmark"
           aria-label={`${settings.name}, inicio`}
         >
-          <span class="brand-title">{settings.name.toLowerCase()}</span>
+          <span class="brand-title header-brand-wordmark">
+            {
+              footerWordmark.map((part) => (
+                <span class:list={[part.italic && "brand-italic"]}>
+                  {part.text}
+                </span>
+              ))
+            }
+          </span>
           <span class="brand-tagline">{settings.tagline}</span>
         </a>
         <button
@@ -284,7 +308,14 @@ const links = [
         <footer class="Section SectionPadded">
           <div class="Footer_Top">
             <div class="Footer_Infos">
-              <h3>{settings.name}</h3>
+              <img
+                src="/assets/brunette-logo-beige.jpg"
+                alt={settings.name}
+                class="Footer_Logo_Badge"
+                width="72"
+                height="72"
+                loading="lazy"
+              />
               {branches.map((b) => (
                 <p>
                   <br />
@@ -378,8 +409,8 @@ const links = [
                 <img
                   src="/assets/ezestom-logo.webp"
                   alt="Ezestom"
-                  width="10"
-                  height="10"
+                  width="12"
+                  height="12"
                   loading="lazy"
                 />
               </a>

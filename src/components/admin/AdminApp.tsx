@@ -260,7 +260,15 @@ export default function AdminApp({
     <div className="admin-shell">
       <aside className="admin-sidebar">
         <a href="/admin" className="admin-wordmark">
-          brunette<span>El espacio del equipo</span>
+          <span className="brand-title">
+            <span className="brand-italic">B</span>
+            <span>r</span>
+            <span className="brand-italic">u</span>
+            <span>ne</span>
+            <span className="brand-italic">tt</span>
+            <span>e</span>
+          </span>
+          <span className="admin-tagline">El espacio del equipo</span>
         </a>
         <nav aria-label="Secciones del panel">
           {tabs
@@ -753,7 +761,15 @@ function Login({
     <div className="admin-login">
       <div className="login-story">
         <a href="/" className="admin-wordmark">
-          brunette<span>Mostrador de antojos</span>
+          <span className="brand-title">
+            <span className="brand-italic">B</span>
+            <span>r</span>
+            <span className="brand-italic">u</span>
+            <span>ne</span>
+            <span className="brand-italic">tt</span>
+            <span>e</span>
+          </span>
+          <span className="admin-tagline">Mostrador de antojos</span>
         </a>
         <div>
           <p>

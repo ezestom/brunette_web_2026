@@ -630,11 +630,11 @@ html:root {
 }
 .reference-site .site_logo.brand-wordmark {
   width: auto;
-  min-width: 160px;
-  height: 48px;
+  min-width: 240px;
+  height: 54px;
   display: block;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   text-decoration: none;
 }
 .reference-site .site_logo.brand-wordmark .Logo_Dark,
@@ -646,10 +646,11 @@ html:root {
   position: absolute;
   top: 50%;
   left: 0;
+  transform: translateY(-50%) !important;
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.5s var(--ulu-curve), opacity 0.4s ease;
+  transition: opacity 0.35s ease;
 }
 .reference-site .site_logo.brand-wordmark .Logo_Dark.Shown,
 .reference-site .site_logo.brand-wordmark .Logo_Light.Shown {
@@ -670,23 +671,28 @@ html:root {
 .reference-site .site_logo.brand-wordmark .Logo_Light {
   color: var(--beige);
 }
-.reference-site .site_logo.brand-wordmark .brand-title {
-  font-family: var(--title-font);
-  font-size: 2.35rem;
-  letter-spacing: -0.08em;
-  line-height: 0.85;
-  font-weight: 600;
+.reference-site .site_logo.brand-wordmark .brand-title,
+.reference-site .Menu_Drawer .Logo.brand-wordmark .brand-title {
+  font-family: "Brunette Serif", "Times New Roman", serif;
+  font-size: 2.5rem;
+  letter-spacing: -0.025em;
+  line-height: 0.95;
+  font-weight: 400;
   display: block;
-  text-transform: lowercase;
+  text-transform: none;
+}
+.reference-site .site_logo.brand-wordmark .brand-title .brand-italic,
+.reference-site .Menu_Drawer .Logo.brand-wordmark .brand-title .brand-italic {
+  font-style: italic;
 }
 .reference-site .site_logo.brand-wordmark .brand-tagline {
   font-family: var(--title-font);
-  font-size: 0.6rem;
+  font-size: 0.64rem;
   font-weight: 400;
   letter-spacing: 0.04em;
   display: block;
   margin-top: 5px;
-  opacity: 0.75;
+  opacity: 0.78;
   text-transform: none;
   line-height: 1;
 }
@@ -698,32 +704,45 @@ html:root {
   text-decoration: none;
   width: auto;
 }
-.reference-site .Menu_Drawer .Logo.brand-wordmark .brand-title {
-  font-family: var(--title-font);
-  font-size: 2.35rem;
-  letter-spacing: -0.08em;
-  line-height: 0.85;
-  font-weight: 600;
-  text-transform: lowercase;
-}
 .reference-site .Menu_Drawer .Logo.brand-wordmark .brand-tagline {
   font-family: var(--title-font);
   font-size: 0.6rem;
   font-weight: 400;
   letter-spacing: 0.04em;
-  margin-top: 5px;
+  margin-top: 4px;
   opacity: 0.75;
   text-transform: none;
   line-height: 1;
 }
 @media (max-width: 768px) {
+  .reference-site .site_logo.brand-wordmark {
+    min-width: 180px;
+    height: 48px;
+  }
   .reference-site .site_logo.brand-wordmark .brand-title {
-    font-size: 1.85rem;
+    font-size: 1.95rem;
   }
   .reference-site .site_logo.brand-wordmark .brand-tagline {
-    font-size: 0.52rem;
-    margin-top: 4px;
+    font-size: 0.54rem;
+    margin-top: 3px;
   }
+}
+.reference-site .Footer_Infos .Footer_Logo_Badge {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+.reference-site footer {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100vh - 80px);
+  min-height: calc(100dvh - 80px);
+  box-sizing: border-box;
 }
 .reference-site .Footer_Middle {
   container-type: inline-size;
@@ -785,13 +804,17 @@ html:root {
 .reference-site .developer-credit {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 0.65rem;
-  line-height: 1.35;
+  gap: 0.25rem;
+  line-height: 1;
+  font-size: 16px;
+  margin: 0;  
+  font-size: smaller;
+  font-weight: 100;
+  font-family: var(--title-font);
 }
 .reference-site .developer-credit img {
-  width: 35px;
-  height: 35px;
+  width:16px;
+  height: 16px;
   object-fit: contain;
   flex-shrink: 0;
   transition: transform 0.3s ease;
