@@ -50,18 +50,31 @@ export function database() {
     stmt.run("published", JSON.stringify(content), content.revision);
     stmt.run("draft", JSON.stringify(content), content.revision);
   }
-  if (!db.prepare("SELECT id FROM users LIMIT 1").get()) {
-    const password =
-      process.env.BRUNETTE_ADMIN_PASSWORD || "5ekT7jBxSpgXVz4I7JmcCPxn";
-    const email = process.env.BRUNETTE_ADMIN_EMAIL || "admin@brunette.local";
-    createUser("Administrador", email, password, "admin");
+  const adminEmail = (
+    process.env.BRUNETTE_ADMIN_EMAIL || "admin@brunette.local"
+  )
+    .trim()
+    .toLowerCase();
+  const adminPassword =
+    process.env.BRUNETTE_ADMIN_PASSWORD || "5ekT7jBxSpgXVz4I7JmcCPxn";
+  const existingAdmin = db
+    .prepare("SELECT id FROM users WHERE email=?")
+    .get(adminEmail) as { id: string } | undefined;
+
+  if (!existingAdmin) {
+    createUser("Administrador", adminEmail, adminPassword, "admin");
     try {
       writeFileSync(
         join(dataDir, "primer-acceso.txt"),
-        `Acceso a Brunette\n\nPanel: /admin\nUsuario: ${email}\nContraseña: ${password}\n\nCambiala desde el panel.\n`,
+        `Acceso a Brunette\n\nPanel: /admin\nUsuario: ${adminEmail}\nContraseña: ${adminPassword}\n\nCambiala desde el panel.\n`,
         { mode: 0o600 },
       );
     } catch {}
+  } else if (process.env.BRUNETTE_ADMIN_PASSWORD) {
+    db.prepare("UPDATE users SET password_hash=?, active=1 WHERE id=?").run(
+      passwordHash(adminPassword),
+      existingAdmin.id,
+    );
   }
   return db;
 }
