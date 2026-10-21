@@ -50,17 +50,18 @@ export function database() {
     stmt.run("published", JSON.stringify(content), content.revision);
     stmt.run("draft", JSON.stringify(content), content.revision);
   }
-  if (
-    process.env.NODE_ENV !== "production" &&
-    !db.prepare("SELECT id FROM users LIMIT 1").get()
-  ) {
-    const password = randomBytes(18).toString("base64url");
-    createUser("Administrador", "admin@brunette.local", password, "admin");
-    writeFileSync(
-      join(dataDir, "primer-acceso.txt"),
-      `Acceso local a Brunette\n\nPanel: http://127.0.0.1:4321/admin\nUsuario: admin@brunette.local\nContraseña: ${password}\n\nEsta clave fue generada al crear la instalación local. Cambiala desde Ayuda.\nNo publiques este archivo ni la carpeta data.\n`,
-      { mode: 0o600 },
-    );
+  if (!db.prepare("SELECT id FROM users LIMIT 1").get()) {
+    const password =
+      process.env.BRUNETTE_ADMIN_PASSWORD || "5ekT7jBxSpgXVz4I7JmcCPxn";
+    const email = process.env.BRUNETTE_ADMIN_EMAIL || "admin@brunette.local";
+    createUser("Administrador", email, password, "admin");
+    try {
+      writeFileSync(
+        join(dataDir, "primer-acceso.txt"),
+        `Acceso a Brunette\n\nPanel: /admin\nUsuario: ${email}\nContraseña: ${password}\n\nCambiala desde el panel.\n`,
+        { mode: 0o600 },
+      );
+    } catch {}
   }
   return db;
 }

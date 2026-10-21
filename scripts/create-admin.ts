@@ -13,7 +13,9 @@ if (
     "Ya existe una cuenta administradora. No se reemplazó ningún acceso.",
   );
 } else {
-  const password = randomBytes(20).toString("base64url");
+  const password =
+    process.env.BRUNETTE_ADMIN_PASSWORD ||
+    "5ekT7jBxSpgXVz4I7JmcCPxn";
   const email = process.env.BRUNETTE_ADMIN_EMAIL || "admin@brunette.local";
   createUser("Administrador", email, password, "admin");
   const site = process.env.BRUNETTE_SITE_URL || "http://127.0.0.1:4321";
