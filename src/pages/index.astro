@@ -1,0 +1,10 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ReferenceHome from "../components/reference/ReferenceHome.astro";
+import { getPublicContent } from "../lib/content";
+const content = getPublicContent();
+---
+
+<Layout content={content} hero>
+  <ReferenceHome content={content} />
+</Layout>

@@ -1,0 +1,69 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getPublicContent } from "../lib/content";
+const content = getPublicContent();
+const { home, branches, categories } = content;
+const moments = [
+  { title: home.introTitle, text: home.introText, image: home.storyImage },
+  {
+    title: "Nos encontramos en Brunette",
+    text: branches.map((b) => `${b.name} · ${b.address}`).join("\n\n"),
+    image: categories[0]?.image || home.heroImage,
+  },
+];
+---
+
+<Layout content={content} title="Nuestra historia">
+  <section class="Section Page_Section SectionPadded Parallax_Wrapper">
+    <h1 class="SectionTitle Cool_Text_Anim Lines">{home.storyTitle}</h1>
+    <div class="Page_Content About_Content Cool_Anim Fade">
+      <p style="white-space:pre-line">{home.storyText}</p>
+    </div>
+  </section>
+  <section class="Section Timeline_Section Parallax_Wrapper SectionPadded">
+    <div class="Timeline_Container">
+      {moments.map((moment, i) => (
+        <div class="Timeline_Element Cool_Anim Fade Multiple">
+          <div class="Timeline_Image Fluid">
+            <img
+              src={moment.image}
+              alt="Preparaciones del mostrador"
+              class="Parallax_Image"
+              width="1440"
+              height="1100"
+              loading="lazy"
+            />
+          </div>
+          <div class="Timeline_Content">
+            <h2>{moment.title}</h2>
+            <p style="white-space:pre-line">{moment.text}</p>
+            {i === 1 && (
+              <a class="Grow_Anim" href="/sucursales">
+                Encontrá tu sucursal ↗
+              </a>
+            )}
+          </div>
+        </div>
+      ))}
+      <div class="Timeline_Line">
+        <div class="Timeline_Inner"></div>
+        {moments.map((_, i) => (
+          <div class="Timeline_Anchor">
+            <div class="Contain_Fluid">
+              <img
+                src={
+                  i % 2
+                    ? "/assets/cookie_full-6a6ab5f2.svg"
+                    : "/assets/cake_full-514b87e0.svg"
+                }
+                alt=""
+                width="100"
+                height="100"
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

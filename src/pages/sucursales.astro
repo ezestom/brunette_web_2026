@@ -1,0 +1,80 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getPublicContent } from "../lib/content";
+const content = getPublicContent();
+const days = [
+  "Domingo",
+  "Lunes",
+  "Martes",
+  "Miércoles",
+  "Jueves",
+  "Viernes",
+  "Sábado",
+];
+---
+
+<Layout content={content} title="Encontranos">
+  <section class="page-heading section-pad">
+    <p class="eyebrow">Nos vemos en Brunette</p>
+    <h1>
+      Tu próximo
+      <br />
+      antojo, cerca.
+    </h1>
+    <p>
+      Elegí tu sucursal para retirar, consultar disponibilidad o coordinar una
+      entrega.
+    </p>
+  </section>
+  <section class="section-pad branch-grid">
+    {content.branches.map((b, i) => (
+      <article class="branch-card">
+        <div class="branch-number">
+          0{i + 1}
+          <span>✳</span>
+        </div>
+        <h2>{b.name}</h2>
+        <p class="branch-address">{b.address}</p>
+        {b.isDemo && (
+          <p class="sample-note">
+            Horarios y condiciones de entrega de prueba.
+          </p>
+        )}
+        <ul class="branch-hours">
+          {b.openingHours.map((h) => (
+            <li>
+              <span>{days[h.day]}</span>
+              <span>{h.closed ? "Cerrado" : `${h.open} — ${h.close}`}</span>
+            </li>
+          ))}
+        </ul>
+        <div class="branch-services">
+          <p>{b.pickupEnabled ? "✓ Retiro en local" : ""}</p>
+          <p>{b.deliveryEnabled ? "✓ Entregas a coordinar" : ""}</p>
+          <small>{b.deliveryZone}</small>
+        </div>
+        <div class="branch-actions">
+          <a
+            href={
+              b.mapUrl ||
+              `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(b.address)}`
+            }
+            target="_blank"
+            rel="noreferrer"
+            class="pill outline"
+          >
+            Cómo llegar ↗
+          </a>
+          <a
+            href={`https://wa.me/${b.whatsapp || content.settings.whatsapp}?text=${encodeURIComponent("¡Hola! Quiero consultar por " + b.name + ".")}`}
+            target="_blank"
+            rel="noreferrer"
+            class="text-link"
+          >
+            WhatsApp ↗
+          </a>
+        </div>
+      </article>
+    ))}
+  </section>
+</Layout>

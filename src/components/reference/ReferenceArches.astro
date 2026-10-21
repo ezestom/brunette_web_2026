@@ -1,0 +1,65 @@
+---
+import type { Content } from "../../lib/types";
+interface Props {
+  content: Content;
+}
+const { content } = Astro.props;
+const photos = content.home.gallery?.filter(Boolean).length
+  ? content.home.gallery.filter(Boolean)
+  : content.products.slice(0, 12).map((p) => p.image);
+---
+
+<section class="Section Arches_Display_Section Parallax_Wrapper SectionPadded">
+  <div
+    class="Arches_Display_Heading Centered Parallax_Front"
+    data-p-displace="-50%"
+  >
+    <h2 class="SectionTitle Cool_Text_Anim Lines">
+      La vida es más dulce con un antojo
+    </h2>
+  </div>
+  <div class="Arches_Display_Container">
+    <div class="Arches_Display_Inner">
+      {[0, 1].map((copy) =>
+        photos.map((src, i) => (
+          <>
+            <div
+              class="Window_Image Instant"
+              aria-hidden={copy === 1 ? "true" : undefined}
+            >
+              <div class="Window_Image_Limit">
+                <div class="Window_Image_Container Fluid">
+                  <img
+                    src={src}
+                    alt={
+                      copy === 0
+                        ? "Preparaciones y momentos de " + content.settings.name
+                        : ""
+                    }
+                    width="500"
+                    height="625"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </div>
+            {i % 3 === 2 && (
+              <div class="Arches_Display_Icon" aria-hidden="true">
+                <img
+                  src={
+                    Math.floor(i / 3) % 2
+                      ? "/assets/cookie_full-6a6ab5f2.svg"
+                      : "/assets/cake_full-514b87e0.svg"
+                  }
+                  alt=""
+                  width="200"
+                  height="200"
+                />
+              </div>
+            )}
+          </>
+        )),
+      )}
+    </div>
+  </div>
+</section>

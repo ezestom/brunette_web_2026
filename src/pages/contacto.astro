@@ -1,0 +1,35 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ContactForm from "../components/ContactForm";
+import { getPublicContent } from "../lib/content";
+const content = getPublicContent();
+const { home, settings } = content;
+---
+
+<Layout content={content} title="Contacto">
+  <section class="Section Contact_Form_Section Parallax_Wrapper SectionPadded">
+    <div class="Contact_Form_Container">
+      <h1 class="Form_Header">{home.contactTitle || "Contactanos"}</h1>
+      {home.contactText && (
+        <p class="contact-description">{home.contactText}</p>
+      )}
+      <ContactForm
+        businessName={settings.name}
+        whatsapp={settings.whatsapp}
+        client:load
+      />
+    </div>
+    <div class="Contact_Form_Image_Container">
+      <div class="Contact_Form_Image Fluid Parallax_Back" data-p-displace="25%">
+        <img
+          src={
+            home.contactImage || "/assets/Two_Food_Photograhers-74100a5d.jpg"
+          }
+          alt="Un rincón de la cafetería"
+          width="1920"
+          height="2880"
+        />
+      </div>
+    </div>
+  </section>
+</Layout>

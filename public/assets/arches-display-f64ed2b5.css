@@ -1,0 +1,58 @@
+.Arches_Display_Section {
+  padding: 20px 0 !important;
+   margin: 3rem 0;
+  .SectionTitle {
+    padding: 0 1rem;
+  }
+}
+
+.Arches_Display_Container {
+  width: 100%;
+  overflow: hidden;
+
+  .Arches_Display_Icon {
+    width: 120px;
+    aspect-ratio: 1;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .Window_Image {
+    width: 20vw;
+    height: 30vw;
+    height: calc(20vw + var(--random) * 5vw);
+  }
+
+  @media screen and (max-width: 768px) {
+    .Arches_Display_Icon {
+      width: 80px;
+    }
+
+    .Window_Image {
+      width: 60vw;
+      height: 80vw;
+      height: calc(60vw + var(--random) * 15vw);
+    }
+  }
+}
+
+.Arches_Display_Inner {
+  display: flex;
+  width: max-content;
+  gap: 1.5rem;
+  align-items: flex-end;
+  animation: scroll 40s infinite linear;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}

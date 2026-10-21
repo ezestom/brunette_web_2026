@@ -1,0 +1,3 @@
+from pathlib import Path
+p=Path('src/layouts/Layout.astro');s=p.read_text(encoding='utf8').replace('id="favicon" rel="icon" type="image/svg+xml" href="/favicon.svg"','id="favicon" rel="icon" type="image/png" href="/assets/favicon_cool-796b68b2.png"').replace('<script is:inline src="/assets/gsap.min-fce7bc2a.js">','<script is:inline>window.favicon1="/assets/favicon_cool_0-4e0720b4.png";window.favicon2="/assets/favicon_cool_1-6be5c985.png";</script><script is:inline src="/assets/gsap.min-fce7bc2a.js">');p.write_text(s,encoding='utf8')
+p=Path('scripts/import-brand.ts');s=p.read_text(encoding='utf8');s=s[:s.index('const layoutPath')]+"console.log('Logo guardado en la web, el panel y los datos iniciales.');\n";p.write_text(s,encoding='utf8')

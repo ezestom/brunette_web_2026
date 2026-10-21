@@ -1,0 +1,107 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ReferenceProduct from "../components/reference/ReferenceProduct.astro";
+import { getPublicContent } from "../lib/content";
+const content = getPublicContent();
+const chosen = Astro.url.searchParams.get("categoria") || "all";
+const selected = content.categories.find((c) => c.id === chosen);
+const query = Astro.url.searchParams.get("q")?.trim() || "";
+const products = content.products.filter(
+  (p) =>
+    (!selected || p.category === selected.id) &&
+    (!query ||
+      p.name.toLocaleLowerCase("es").includes(query.toLocaleLowerCase("es"))),
+);
+---
+
+<Layout content={content} title={selected?.name || "Los antojos"}>
+  <section class="Section Collection_Page_Section SectionPadded">
+    <div class="Collection_Top Parallax_Wrapper">
+      <h1 class="SectionTitle Cool_Text_Anim Lines" style="color:var(--pink)">
+        {selected?.name || "Los antojos"}
+      </h1>
+      <div class="Cool_Anim Fade">
+        <p>
+          {selected?.description ||
+            "Del mostrador para hoy, o por encargo para ese día especial."}
+        </p>
+      </div>
+    </div>
+    <nav class="reference-filters" aria-label="Filtrar por categoría">
+      <a href="/catalogo" aria-current={!selected ? "page" : undefined}>
+        Todos
+      </a>
+      {content.categories.map((c) => (
+        <a
+          href={"/catalogo?categoria=" + c.id}
+          aria-current={c.id === selected?.id ? "page" : undefined}
+        >
+          {c.name}
+        </a>
+      ))}
+    </nav>
+    <form class="reference-catalog-search" action="/catalogo" role="search">
+      {selected && <input type="hidden" name="categoria" value={selected.id} />}
+      <label for="catalog-query" class="sr-only">
+        Buscar productos
+      </label>
+      <input
+        id="catalog-query"
+        name="q"
+        type="search"
+        value={query}
+        placeholder="¿Qué se te antoja?"
+      />
+      <button type="submit">Buscar</button>
+    </form>
+    <p class="reference-result" aria-live="polite">
+      {products.length} antojos para elegir{query ? ` · “${query}”` : ""}
+    </p>
+    <div class="Collection_Bottom">
+      <div class="Collection_Product_List Cool_Anim Fade Multiple">
+        {products.map((product) => (
+          <div class="Collection_Product">
+            <ReferenceProduct
+              product={product}
+              currency={content.settings.currency}
+            />
+          </div>
+        ))}
+      </div>
+      {!products.length && (
+        <div class="empty-state">
+          <h2>No encontramos ese antojo.</h2>
+          <p>Probá con otro nombre o elegí otra categoría.</p>
+          <a href="/catalogo" class="pill primary">
+            Ver todo
+          </a>
+        </div>
+      )}
+    </div>
+  </section>
+  <section class="Section Other_Collection_Section SectionPadded Parallax_Wrapper">
+    <h2 class="SectionTitle Cool_Text_Anim Lines">¿Un antojo más?</h2>
+    <div class="Other_Collections_Container">
+      {content.categories
+        .filter((c) => c.id !== selected?.id)
+        .map((c, i) => (
+          <a
+            href={"/catalogo?categoria=" + c.id}
+            class="Other_Collection"
+            style={`background-color:${i % 2 ? "var(--pink)" : "var(--dark)"}`}
+          >
+            <div class="Other_Collection_Image Rounded Fluid">
+              <img
+                src={c.image}
+                alt=""
+                width="480"
+                height="600"
+                loading="lazy"
+              />
+            </div>
+            <h3>{c.name}</h3>
+          </a>
+        ))}
+    </div>
+  </section>
+</Layout>

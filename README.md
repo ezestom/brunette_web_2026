@@ -159,7 +159,4 @@ anticipaciones, precios, cobertura y teléfonos de cada sucursal; cargar el logo
 revisar las cuentas del equipo y desactivar el modo de prueba. La web está
 preparada para hacer esos cambios desde el panel.
 
-Panel: Abrir administración
-Usuario: admin@brunette.local
-Contraseña: 5ekT7jBxSpgXVz4I7JmcCPxn
 # brunette_web_2026

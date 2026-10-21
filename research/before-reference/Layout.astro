@@ -1,0 +1,200 @@
+---
+import "../styles/global.css";
+import CartDrawer from "../components/CartDrawer";
+import type { Content } from "../lib/types";
+interface Props {
+  content: Content;
+  title?: string;
+  description?: string;
+  hero?: boolean;
+}
+const { content, title, description, hero = false } = Astro.props;
+const { settings, home, branches } = content;
+Astro.response.headers.set("Cache-Control", "no-store");
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description || settings.description} />
+    <meta name="theme-color" content={settings.colorPrimary} />
+    <title>{title?`${title} · ${settings.name}`:`${settings.name} · ${settings.tagline}`}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link
+      rel="preload"
+      href="/assets/ApfelGrotezk-Fett-a421b105.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+  </head>
+  <body
+    class:list={[hero && "has-hero"]}
+    style={`--green:${settings.colorPrimary};--cream:${settings.colorBackground};--pink:${settings.colorAccent};`}
+  >
+    <a class="skip-link" href="#contenido">
+      Ir al contenido
+    </a>
+    {home.previewMode && (
+      <div class="preview-bar">
+        Vista de prueba · Fotos, productos y horarios de ejemplo
+      </div>
+    )}
+    <header
+      class:list={[
+        "site-header",
+        hero && "over-hero",
+        settings.logo && "with-logo",
+      ]}
+      id="site-header"
+    >
+      <a href="/" class="wordmark" aria-label={`${settings.name}, inicio`}>
+        {settings.logo ? (
+          <img
+            src={settings.logo}
+            alt={settings.name}
+            width="400"
+            height="400"
+          />
+        ) : (
+          <>
+            {settings.name}
+            <span>mostrador de antojos</span>
+          </>
+        )}
+      </a>
+      <nav class="desktop-nav" aria-label="Principal">
+        <a href="/catalogo">Los antojos</a>
+        <a href="/nosotros">Nuestra historia</a>
+        <a href="/sucursales">Encontranos</a>
+      </nav>
+      <div class="header-actions">
+        <CartDrawer content={content} client:load />
+        <button
+          class="menu-toggle icon-button"
+          aria-label="Abrir menú"
+          aria-controls="mobile-nav"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </header>
+    <nav id="mobile-nav" class="mobile-nav" aria-label="Menú móvil" hidden>
+      <a href="/">Inicio</a>
+      <a href="/catalogo">Los antojos</a>
+      <a href="/nosotros">Nuestra historia</a>
+      <a href="/sucursales">Encontranos</a>
+      <a href={settings.instagram} target="_blank" rel="noreferrer">
+        Instagram ↗
+      </a>
+    </nav>
+    <main id="contenido">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="footer-top">
+        <a class:list={["footer-brand", settings.logo && "with-logo"]} href="/">
+          {settings.logo ? (
+            <img
+              src={settings.logo}
+              alt={settings.name}
+              width="400"
+              height="400"
+              loading="lazy"
+            />
+          ) : (
+            <>
+              {settings.name}
+              <span>{settings.tagline}</span>
+            </>
+          )}
+        </a>
+        <div class="footer-message">
+          Siempre es un buen momento
+          <br />
+          para un antojo. <span>✳</span>
+        </div>
+      </div>
+      <div class="footer-grid">
+        <div>
+          <p class="eyebrow">Nos encontramos acá</p>
+          {branches.map((b) => (
+            <div class="footer-branch">
+              <strong>{b.name}</strong>
+              <p>{b.address || "Dirección a confirmar"}</p>
+            </div>
+          ))}
+        </div>
+        <div>
+          <p class="eyebrow">Seguí el antojo</p>
+          <a href={settings.instagram} target="_blank" rel="noreferrer">
+            Instagram ↗
+          </a>
+          {settings.whatsapp && (
+            <a
+              href={`https://wa.me/${settings.whatsapp}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Hablemos por WhatsApp ↗
+            </a>
+          )}
+        </div>
+        <div>
+          <p class="eyebrow">A tu manera</p>
+          <a href="/catalogo">Productos del mostrador</a>
+          <a href="/catalogo?categoria=tortas">Tortas por encargo</a>
+          <a href="/sucursales">Retiro y entregas</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>
+          © {new Date().getFullYear()} {settings.name}
+        </span>
+        <a href="/admin">Acceso del equipo ↗</a>
+      </div>
+    </footer>
+    <script>
+      const button = document.querySelector<HTMLButtonElement>(".menu-toggle");
+      const nav = document.querySelector<HTMLElement>("#mobile-nav");
+      button?.addEventListener("click", () => {
+        const open = button.getAttribute("aria-expanded") !== "true";
+        button.setAttribute("aria-expanded", String(open));
+        button.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+        if (nav) nav.hidden = !open;
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && nav) {
+          nav.hidden = true;
+          button?.setAttribute("aria-expanded", "false");
+        }
+      });
+      const header = document.getElementById("site-header");
+      const scroll = () =>
+        header?.classList.toggle("scrolled", window.scrollY > 60);
+      window.addEventListener("scroll", scroll, { passive: true });
+      scroll();
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!reduced) {
+        const observer = new IntersectionObserver(
+          (entries) =>
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
+            }),
+          { threshold: 0.1 },
+        );
+        document.querySelectorAll("[data-reveal]").forEach((el) => {
+          el.classList.add("will-reveal");
+          observer.observe(el);
+        });
+      }
+    </script>
+  </body>
+</html>

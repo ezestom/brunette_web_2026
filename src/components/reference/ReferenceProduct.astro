@@ -1,0 +1,139 @@
+---
+import type { Product } from "../../lib/types";
+import { money } from "../../lib/order";
+interface Props {
+  product: Product;
+  currency: string;
+}
+const { product: p, currency } = Astro.props;
+const secondary = p.gallery.find((src) => src !== p.image);
+const soldOut = p.availability === "soldOut" || !p.variants[0]?.available;
+---
+
+<form
+  class="Product_Item"
+  data-product-id={p.id}
+  data-variant-id={p.variants[0]?.id}
+  data-multiple={p.variants.length > 1 ? "true" : "false"}
+  data-product-url={"/productos/" + p.slug}
+>
+  <a href={"/productos/" + p.slug} class="Product_Item_Image Fluid">
+    <img
+      src={p.image}
+      alt={p.imageAlt || p.name}
+      width="480"
+      height="600"
+      loading="lazy"
+    />
+    {secondary && (
+      <div class="Product_Item_Second_Image Fluid">
+        <img src={secondary} alt="" width="480" height="480" loading="lazy" />
+      </div>
+    )}
+    {(p.ingredients || []).slice(0, 3).map((label, i) => (
+      <div
+        class="Product_Item_Ingredient"
+        style={`--top:${[30, 23, 70][i]}%;--left:${[26, 76, 50][i]}%;--rotation:${[-29, 13, -8][i]}deg`}
+      >
+        <span>{label}</span>
+      </div>
+    ))}
+  </a>
+  <div>
+    <a href={"/productos/" + p.slug}>
+      <h3 class="Product_Item_Title">{p.name}</h3>
+      <span class="Format">
+        {p.fulfillment === "preorder" ? "Por encargo" : "Del mostrador"}
+      </span>
+      {p.leadTimeHours ? (
+        <>
+          <span class="Separator_Dot"></span>
+          <span class="Weight">{p.leadTimeHours} h de anticipación</span>
+        </>
+      ) : null}
+    </a>
+  </div>
+  <div class="Product_Item_Content">
+    <div class="Infos">
+      <span class="Price">
+        {p.variants.length > 1 ? "Desde " : ""}
+        {money(p.variants[0]?.price ?? null, currency)}
+      </span>
+    </div>
+    <div class="Quantity_Selector">
+      <button
+        type="button"
+        class="Minus_Button Quantity_Selector_Button"
+        aria-label={"Reducir cantidad de " + p.name}
+      >
+        <span>−</span>
+      </button>
+      <input
+        type="number"
+        name="quantity"
+        value="1"
+        min="1"
+        max="99"
+        step="1"
+        inputmode="numeric"
+        aria-label={"Cantidad de " + p.name}
+      />
+      <button
+        type="button"
+        class="Plus_Button Quantity_Selector_Button"
+        aria-label={"Aumentar cantidad de " + p.name}
+      >
+        <span>+</span>
+      </button>
+    </div>
+  </div>
+  <div class="Product_Item_Submit_Container Relative_To_Mouse">
+    <button
+      class="Product_Item_Submit"
+      type="submit"
+      disabled={soldOut}
+      aria-label={(p.variants.length > 1 ? "Elegir " : "Agregar ") + p.name}
+    >
+      {soldOut
+        ? "Agotado"
+        : p.variants.length > 1
+          ? "Elegir presentación"
+          : "Agregar al pedido"}
+    </button>
+  </div>
+</form>
+<script>
+  import { addToCart } from "../../lib/cart-store";
+  document
+    .querySelectorAll<HTMLFormElement>("form.Product_Item[data-product-id]")
+    .forEach((form) => {
+      const input = form.querySelector<HTMLInputElement>("[name=quantity]")!;
+      const normalize = () =>
+        (input.value = String(
+          Math.min(99, Math.max(1, Math.floor(Number(input.value) || 1))),
+        ));
+      input.addEventListener("change", normalize);
+      form.querySelector(".Minus_Button")?.addEventListener("click", () => {
+        input.value = String(Number(input.value) - 1);
+        normalize();
+      });
+      form.querySelector(".Plus_Button")?.addEventListener("click", () => {
+        input.value = String(Number(input.value) + 1);
+        normalize();
+      });
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        normalize();
+        if (form.dataset.multiple === "true") {
+          location.href = form.dataset.productUrl!;
+          return;
+        }
+        if (!form.querySelector("button[type=submit]:disabled"))
+          addToCart(
+            form.dataset.productId!,
+            form.dataset.variantId!,
+            Number(input.value),
+          );
+      });
+    });
+</script>

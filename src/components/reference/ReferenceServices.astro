@@ -1,0 +1,39 @@
+---
+import type { Content } from "../../lib/types";
+interface Props {
+  content: Content;
+}
+const { content } = Astro.props;
+const cards = [
+  { title: "Del mostrador a tu mesa", text: content.home.heroSubtitle },
+  { title: "A tu manera", text: content.settings.orderNotice },
+  ...content.branches.map((b) => ({
+    title: b.name,
+    text: `${b.address}. ${b.pickupEnabled ? "Retiro en el local. " : ""}${b.deliveryEnabled ? "Entregas a coordinar por WhatsApp." : ""}`,
+  })),
+];
+---
+
+<section
+  class="Section Testimonials_Section Parallax_Wrapper"
+  aria-label="Cómo pedir en Brunette"
+>
+  <div class="Testimonials_Scroller">
+    <div class="Testimonials_Container">
+      {[...cards, ...cards].map((card, i) => (
+        <article
+          class="Testimonial"
+          aria-hidden={i >= cards.length ? "true" : undefined}
+        >
+          <h3 class="Citations" aria-hidden="true">
+            “
+          </h3>
+          <p>{card.text}</p>
+          <div class="Testimonial_Logo">
+            <strong>{card.title}</strong>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

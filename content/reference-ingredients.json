@@ -1,0 +1,38 @@
+{
+  "birthday-cookie-4oz": ["White chocolate", "Sprinkles"],
+  "smores-cookie-4oz": ["Marshmallows", "Dark chocolate", "Graham crackers"],
+  "white-dark-chocolate-chunk-cookie-4oz": [
+    "White chocolate",
+    "Dark chocolate",
+    "Chunks"
+  ],
+  "double-dark-chocolate-cookie-4oz": [
+    "Chocolate",
+    "Chocolate",
+    "More Chocolate",
+    "Chunks"
+  ],
+  "milk-chocolate-caramel-cookie-4oz": [
+    "Chocolate chips",
+    "Caramel",
+    "Caramel chunks"
+  ],
+  "salted-caramel-pecan-cookie-4oz": ["Pecans", "Milk chocolate", "Caramel"],
+  "chocolate-chunk-walnut-cookie": [
+    "Roasted Walnuts",
+    "Dark Chocolate",
+    "Milk Chocolate"
+  ],
+  "black-white-chocolate-cookie-4oz": [
+    "Caramel",
+    "Brownie Chunks",
+    "Blondie Chunks"
+  ],
+  "peanut-butter-jam-cookie-6oz": ["Peanut Butter", "Raspberry Jam", "Caramel"],
+  "pecan-cookie-vegan-4oz": ["Toasted Pecan", "Chocolate Chip", "Maple Syrup"],
+  "hazelnut-chocolate-ganache-cookie-4oz": [
+    "Dark Chocolate",
+    "Salted Caramel",
+    "Hazelnut"
+  ]
+}

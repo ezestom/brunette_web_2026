@@ -1,0 +1,183 @@
+---
+import ReferenceArches from "./ReferenceArches.astro";
+import ReferenceProduct from "./ReferenceProduct.astro";
+import ReferenceBrowser from "./ReferenceBrowser.astro";
+import ReferenceServices from "./ReferenceServices.astro";
+import type { Content } from "../../lib/types";
+interface Props {
+  content: Content;
+}
+const { content } = Astro.props;
+const { home, products, settings } = content;
+---
+
+<section class="Section Hero_Section Dark_Section">
+  <div class="Hero_Wrapper Parallax_Wrapper">
+    <div class="Hero_Back_Img Parallax_Back_Hero Fluid">
+      <img
+        src={home.heroImage}
+        alt="Tortas y preparaciones del mostrador"
+        width="1920"
+        height="1393"
+        fetchpriority="high"
+      />
+    </div>
+    <div class="Hero_Content Parallax_Hero_Front">
+      <div class="Hero_Heading_wrapper">
+        <h1 class="Hero_Heading Cool_Text_Anim Words">{home.heroTitle}</h1>
+        <div class="Hero_Float Parallax_Hero_Front">
+          <div class="Cool_Anim Fade Grow">
+            <a
+              href="#hero-anchor"
+              class="Hero_Float_Inner"
+              data-content="Se me antoja"
+            >
+              Se me antoja
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="Hero_Stickers"></div>
+    </div>
+  </div>
+</section>
+
+<section class="Section Title_Text_Section Parallax_Wrapper SectionPadded">
+  <div class="Title_Text_Heading">
+    <h2 class="SectionTitle Cool_Text_Anim Lines">{home.introTitle}</h2>
+  </div>
+  <div class="Title_Text_Content Cool_Anim Fade">
+    <p>{home.introText}</p>
+  </div>
+  <div class="Parallax_Front Absolute_Img Contain_Fluid" data-p-displace="-50%">
+    <img
+      src="/assets/cake-aa6b6719.svg"
+      alt=""
+      srcset="/assets/cake-aa6b6719.svg 352w, /assets/cake-aa6b6719.svg 400w"
+      width="400"
+      height="365"
+    />
+  </div>
+</section>
+
+<section
+  class="Section Collection_Display_Section Parallax_Wrapper SectionPadded"
+  id="hero-anchor"
+>
+  <div class="Collection_Display">
+    {products
+      .filter((p) => p.featured)
+      .slice(0, 3)
+      .map((product) => (
+        <div class="Collection_Display_Item">
+          <ReferenceProduct product={product} currency={settings.currency} />
+        </div>
+      ))}
+  </div>
+  <div class="Collection_Display_Back">
+    <div class="Marquee">
+      <div class="Marquee_Content Reversed">
+        <div class="Reversed">Favoritos</div>
+        <div>Favoritos</div>
+        <div>Favoritos</div>
+        <div>Favoritos</div>
+        <div class="Reversed">Favoritos</div>
+        <div>Favoritos</div>
+        <div>Favoritos</div>
+        <div>Favoritos</div>
+      </div>
+    </div>
+    <div class="Marquee">
+      <div class="Marquee_Content">
+        <div class="Reversed">Favoritos</div>
+        <div>Favoritos</div>
+        <div>Favoritos</div>
+        <div>Favoritos</div>
+        <div class="Reversed">Favoritos</div>
+        <div>Favoritos</div>
+        <div>Favoritos</div>
+        <div>Favoritos</div>
+      </div>
+    </div>
+    <div class="Marquee">
+      <div class="Marquee_Content Reversed">
+        <div class="Reversed">Favoritos</div>
+        <div>Favoritos</div>
+        <div>Favoritos</div>
+        <div>Favoritos</div>
+        <div class="Reversed">Favoritos</div>
+        <div>Favoritos</div>
+        <div>Favoritos</div>
+        <div>Favoritos</div>
+      </div>
+    </div>
+    <div class="Marquee">
+      <div class="Marquee_Content">
+        <div class="Reversed">Favoritos</div>
+        <div>Favoritos</div>
+        <div>Favoritos</div>
+        <div>Favoritos</div>
+        <div class="Reversed">Favoritos</div>
+        <div>Favoritos</div>
+        <div>Favoritos</div>
+        <div>Favoritos</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ReferenceArches content={content} />
+
+<ReferenceBrowser content={content} />
+<ReferenceServices content={content} />
+<section class="Section Collections_CTA_Section Parallax_Wrapper SectionPadded">
+  <div
+    class="Collections_CTA_Heading Centered Parallax_Front"
+    data-p-displace="-50%"
+  >
+    <h2 class="SectionTitle Cool_Text_Anim Lines Hidden">{home.storyTitle}</h2>
+  </div>
+
+  <div class="Collections_CTA_Image Dynamic_Window">
+    <div class="Window_Image No_Anim" style="aspect-ratio: 0.75">
+      <div class="Window_Image_Limit">
+        <div class="Window_Image_Container Fluid">
+          <img
+            src={home.storyImage}
+            alt="Preparaciones del mostrador"
+            width="500"
+            height="625"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="Collections_CTA_Button Relative_To_Mouse">
+      <a href="/catalogo?categoria=tortas">
+        <span>Pedir</span>
+      </a>
+    </div>
+    <svg
+      id="Calque_2"
+      data-name="Calque 2"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 221.66 283.6"
+      class="Collections_CTA_Title_SVG"
+      aria-hidden
+    >
+      <path
+        fill="none"
+        id="Text_Path"
+        d="M 0.5 283.6 V 106 C 0.5 48.7 48.7 5 106 5 H 111.6 C 171.1 5 219.4 48.8 219.4 108.4 V 283.6 H 0.5 Z"
+      ></path>
+
+      <text>
+        <textPath href="#Text_Path" startOffset="220">
+          {home.storyTitle}
+        </textPath>
+      </text>
+    </svg>
+  </div>
+
+  <div class="Collections_CTA_Text Cool_Anim Fade">{home.storyText}</div>
+</section>

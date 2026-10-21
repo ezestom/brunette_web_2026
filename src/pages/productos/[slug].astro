@@ -1,0 +1,44 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import ProductDetail from "../../components/ProductDetail";
+import ReferenceProduct from "../../components/reference/ReferenceProduct.astro";
+import { getPublicContent } from "../../lib/content";
+const content = getPublicContent();
+const product = content.products.find((p) => p.slug === Astro.params.slug);
+if (!product) return Astro.redirect("/catalogo");
+---
+
+<Layout
+  content={content}
+  title={product.name}
+  description={product.description}
+>
+  <section class="Section Product_Page_Section SectionPadded">
+    <a class="back-link Grow_Anim" href="/catalogo">
+      ← Volver a los antojos
+    </a>
+    <ProductDetail
+      product={product}
+      currency={content.settings.currency}
+      client:load
+    />
+  </section>
+  <section class="Section SectionPadded">
+    <h2 class="SectionTitle RecommendedTitle Cool_Text_Anim Lines">
+      Un antojo más.
+    </h2>
+    <div class="Collection_Product_List">
+      {content.products
+        .filter((p) => p.id !== product.id && p.category === product.category)
+        .slice(0, 3)
+        .map((p) => (
+          <div class="Collection_Product">
+            <ReferenceProduct
+              product={p}
+              currency={content.settings.currency}
+            />
+          </div>
+        ))}
+    </div>
+  </section>
+</Layout>

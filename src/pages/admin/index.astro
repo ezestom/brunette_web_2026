@@ -1,0 +1,23 @@
+---
+import "../../styles/global.css";
+import "../../styles/admin.css";
+import AdminApp from "../../components/admin/AdminApp";
+import { sessionUser } from "../../lib/db";
+const user = sessionUser(Astro.cookies.get("brunette_session")?.value);
+Astro.response.headers.set("Cache-Control", "no-store");
+Astro.response.headers.set("X-Frame-Options", "DENY");
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>El espacio del equipo · Brunette</title>
+    <link rel="icon" href="/favicon.svg" />
+  </head>
+  <body class="admin-page">
+    <AdminApp initialUser={user} client:load />
+  </body>
+</html>

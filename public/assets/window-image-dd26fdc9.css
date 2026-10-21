@@ -1,0 +1,2 @@
+.Window_Image{width:30vw;display:flex;align-items:end;justify-content:center}.Window_Image_Limit{border-radius:500px 500px 5rem 5rem;width:20%;height:40%;overflow:hidden;position:relative}.No_Anim .Window_Image_Limit{width:100%;height:100%}.Window_Image_Container{position:absolute;top:50%;left:50%;height:100%;width:30vw;transform:translate(-50%,-50%)}.Window_Image_Container img{transform:scale(1.3)}@media screen and (max-width:768px){.Window_Image,.Window_Image_Container{width:65vw}}
+

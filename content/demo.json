@@ -1,0 +1,902 @@
+{
+  "schemaVersion": 1,
+  "revision": "initial-demo",
+  "settings": {
+    "name": "Brunette",
+    "tagline": "Mostrador de antojos",
+    "description": "Un lugar para encontrar tu próximo antojo. Catálogo, pedidos para retirar y consultas por WhatsApp.",
+    "whatsapp": "5491168641122",
+    "instagram": "https://www.instagram.com/brunette.mostradordeantojos/",
+    "address": "",
+    "mapUrl": "",
+    "currency": "ARS",
+    "timezone": "America/Argentina/Buenos_Aires",
+    "openingHours": [],
+    "pickupEnabled": true,
+    "deliveryEnabled": true,
+    "deliveryZone": "",
+    "deliveryFee": null,
+    "minimumOrder": null,
+    "defaultLeadTimeHours": 24,
+    "closedDates": [],
+    "orderNotice": "La disponibilidad, el precio final y el horario se confirman por WhatsApp. Enviar la consulta no reserva el pedido.",
+    "logo": "/assets/brunette-logo-beige.jpg",
+    "colorPrimary": "#1c352c",
+    "colorBackground": "#f5eee5",
+    "colorAccent": "#f0b4c3"
+  },
+  "home": {
+    "heroTitle": "Antojos que se comparten.",
+    "heroSubtitle": "Del mostrador a tu mesa. Encontrá tu favorito y coordiná tu pedido con nosotros.",
+    "heroImage": "/assets/BERNICE_HeroCakeImage-a5d690cb.jpg",
+    "introTitle": "Siempre hay una buena excusa para algo rico.",
+    "introText": "Elegí del catálogo, consultá lo que hay disponible o pedí con anticipación para una ocasión especial.",
+    "storyTitle": "Un mostrador. Mil antojos.",
+    "storyText": "Este espacio está reservado para contar la historia de Brunette, presentar al equipo y compartir lo que hace especial a cada preparación.",
+    "storyImage": "/assets/Untitled_design_29-2b38c165.png",
+    "announcement": "Tu próximo antojo está acá · Retiro y entregas a coordinar",
+    "showAnnouncement": true,
+    "previewMode": true,
+    "gallery": [
+      "/assets/Two_Food_Photograhers-168-ed4a1332.jpg",
+      "/assets/Two_Food_Photograhers-50-697f1568.jpg",
+      "/assets/Two_Food_Photograhers-59-9845bb3d.jpg",
+      "/assets/Two_Food_Photograhers-4-e4a94fd2.jpg",
+      "/assets/Two_Food_Photograhers-184-d4199d36.jpg",
+      "/assets/Two_Food_Photograhers-164-ea3c4ce6.jpg",
+      "/assets/Two_Food_Photograhers-40-b680fce9.jpg",
+      "/assets/Two_Food_Photograhers-160-4ca3b953.jpg",
+      "/assets/Two_Food_Photograhers-6-386762fa.jpg"
+    ],
+    "contactTitle": "Contactanos",
+    "contactText": "",
+    "contactImage": "/assets/Two_Food_Photograhers-74100a5d.jpg"
+  },
+  "categories": [
+    {
+      "id": "cookies",
+      "name": "Cookies",
+      "description": "Para compartir. O no.",
+      "image": "/assets/birthday-cookie-1-f9af14fc.jpg",
+      "active": true
+    },
+    {
+      "id": "tortas",
+      "name": "Tortas",
+      "description": "Para los días que merecen algo especial.",
+      "image": "/assets/Untitled_design_29-2b38c165.png",
+      "active": true
+    }
+  ],
+  "products": [
+    {
+      "id": "ref-7910872154309",
+      "slug": "birthday-cookie-4oz",
+      "name": "Cookie de cumpleaños",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "cookies",
+      "image": "/assets/birthday-cookie-1-f9af14fc.jpg",
+      "imageAlt": "Cookie de cumpleaños",
+      "gallery": [
+        "/assets/birthday-cookie-1-f9af14fc.jpg",
+        "/assets/birthday-cookie-2-8a5c6835.png"
+      ],
+      "availability": "available",
+      "fulfillment": "ready",
+      "leadTimeHours": 0,
+      "featured": true,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "43568369139909",
+          "name": "Presentación estándar",
+          "price": 450000,
+          "available": true
+        }
+      ],
+      "order": 0,
+      "ingredients": ["Chocolate blanco", "Granas"]
+    },
+    {
+      "id": "ref-7910878380229",
+      "slug": "smores-cookie-4oz",
+      "name": "Cookie de chocolate y marshmallow",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "cookies",
+      "image": "/assets/smores-cookie-1-58ff4fda.jpg",
+      "imageAlt": "Cookie de chocolate y marshmallow",
+      "gallery": [
+        "/assets/smores-cookie-1-58ff4fda.jpg",
+        "/assets/smores-cookie-2-ff541237.png"
+      ],
+      "availability": "available",
+      "fulfillment": "ready",
+      "leadTimeHours": 0,
+      "featured": true,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "43568390406341",
+          "name": "Presentación estándar",
+          "price": 465000,
+          "available": true
+        }
+      ],
+      "order": 1,
+      "ingredients": ["Malvaviscos", "Chocolate amargo", "Galletitas"]
+    },
+    {
+      "id": "ref-7746617114821",
+      "slug": "white-dark-chocolate-chunk-cookie-4oz",
+      "name": "Cookie de dos chocolates",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "cookies",
+      "image": "/assets/white-dark-chocolate-chunk-cookie-1-ec351628.jpg",
+      "imageAlt": "Cookie de dos chocolates",
+      "gallery": [
+        "/assets/white-dark-chocolate-chunk-cookie-1-ec351628.jpg",
+        "/assets/white-dark-chocolate-chunk-cookie-2-62a304da.png"
+      ],
+      "availability": "available",
+      "fulfillment": "ready",
+      "leadTimeHours": 0,
+      "featured": true,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "43122499289285",
+          "name": "Presentación estándar",
+          "price": 480000,
+          "available": true
+        }
+      ],
+      "order": 2,
+      "ingredients": [
+        "Chocolate blanco",
+        "Chocolate amargo",
+        "Trozos de chocolate"
+      ]
+    },
+    {
+      "id": "ref-7866059194565",
+      "slug": "double-dark-chocolate-cookie-4oz",
+      "name": "Cookie de chocolate intenso",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "cookies",
+      "image": "/assets/double-dark-chocolate-cookie-1-dfde8235.jpg",
+      "imageAlt": "Cookie de chocolate intenso",
+      "gallery": [
+        "/assets/double-dark-chocolate-cookie-1-dfde8235.jpg",
+        "/assets/double-dark-chocolate-cookie-2-89abfa29.png"
+      ],
+      "availability": "available",
+      "fulfillment": "ready",
+      "leadTimeHours": 0,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "43857743872197",
+          "name": "Presentación estándar",
+          "price": 495000,
+          "available": true
+        }
+      ],
+      "order": 3,
+      "ingredients": [
+        "Chocolate",
+        "Chocolate",
+        "More Chocolate",
+        "Trozos de chocolate"
+      ]
+    },
+    {
+      "id": "ref-8021251621061",
+      "slug": "milk-chocolate-caramel-cookie-4oz",
+      "name": "Cookie de chocolate y caramelo",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "cookies",
+      "image": "/assets/milk-chocolate-caramel-cookie-1-86d5b021.jpg",
+      "imageAlt": "Cookie de chocolate y caramelo",
+      "gallery": [
+        "/assets/milk-chocolate-caramel-cookie-1-86d5b021.jpg",
+        "/assets/milk-chocolate-caramel-cookie-2-1e8eaf3d.png"
+      ],
+      "availability": "available",
+      "fulfillment": "ready",
+      "leadTimeHours": 0,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "43854003503301",
+          "name": "Presentación estándar",
+          "price": 510000,
+          "available": true
+        }
+      ],
+      "order": 4,
+      "ingredients": ["Chips de chocolate", "Caramelo", "Trozos de caramelo"]
+    },
+    {
+      "id": "ref-7866059030725",
+      "slug": "salted-caramel-pecan-cookie-4oz",
+      "name": "Cookie de caramelo y pecán",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "cookies",
+      "image": "/assets/salted-caramel-pecan-cookie-1-b56a6dd3.jpg",
+      "imageAlt": "Cookie de caramelo y pecán",
+      "gallery": [
+        "/assets/salted-caramel-pecan-cookie-1-b56a6dd3.jpg",
+        "/assets/salted-caramel-pecan-cookie-2-8083a08d.png"
+      ],
+      "availability": "available",
+      "fulfillment": "ready",
+      "leadTimeHours": 0,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "43436806537413",
+          "name": "Presentación estándar",
+          "price": 525000,
+          "available": true
+        }
+      ],
+      "order": 5,
+      "ingredients": ["Nueces pecán", "Chocolate con leche", "Caramelo"]
+    },
+    {
+      "id": "ref-8110055948485",
+      "slug": "chocolate-chunk-walnut-cookie",
+      "name": "Cookie de chocolate y nuez",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "cookies",
+      "image": "/assets/chocolate-chunk-walnut-cookie-1-e668b5e7.jpg",
+      "imageAlt": "Cookie de chocolate y nuez",
+      "gallery": [
+        "/assets/chocolate-chunk-walnut-cookie-1-e668b5e7.jpg",
+        "/assets/chocolate-chunk-walnut-cookie-2-1c9dd4b5.png"
+      ],
+      "availability": "available",
+      "fulfillment": "ready",
+      "leadTimeHours": 0,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "44116494254277",
+          "name": "Presentación estándar",
+          "price": 540000,
+          "available": true
+        }
+      ],
+      "order": 6,
+      "ingredients": [
+        "Nueces tostadas",
+        "Chocolate amargo",
+        "Chocolate con leche"
+      ]
+    },
+    {
+      "id": "ref-8110036353221",
+      "slug": "black-white-chocolate-cookie-4oz",
+      "name": "Cookie de chocolate blanco y negro",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "cookies",
+      "image": "/assets/black-and-white-chocolate-cookie-1-e5bbac3e.jpg",
+      "imageAlt": "Cookie de chocolate blanco y negro",
+      "gallery": [
+        "/assets/black-and-white-chocolate-cookie-1-e5bbac3e.jpg",
+        "/assets/black-and-white-chocolate-cookie-2-5613aa92.png"
+      ],
+      "availability": "soldOut",
+      "fulfillment": "ready",
+      "leadTimeHours": 0,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "44116385628357",
+          "name": "Presentación estándar",
+          "price": 555000,
+          "available": true
+        }
+      ],
+      "order": 7,
+      "ingredients": ["Caramelo", "Trozos de brownie", "Trozos de blondie"]
+    },
+    {
+      "id": "ref-8110056964293",
+      "slug": "peanut-butter-jam-cookie-6oz",
+      "name": "Cookie de maní y mermelada",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "cookies",
+      "image": "/assets/peanut-butter-jam-cookie-1-0090c70d.jpg",
+      "imageAlt": "Cookie de maní y mermelada",
+      "gallery": [
+        "/assets/peanut-butter-jam-cookie-1-0090c70d.jpg",
+        "/assets/peanut-butter-jam-cookie-2-008fd422.png"
+      ],
+      "availability": "available",
+      "fulfillment": "ready",
+      "leadTimeHours": 0,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "44116497727685",
+          "name": "Presentación estándar",
+          "price": 570000,
+          "available": true
+        }
+      ],
+      "order": 8,
+      "ingredients": [
+        "Mantequilla de maní",
+        "Mermelada de frambuesa",
+        "Caramelo"
+      ]
+    },
+    {
+      "id": "ref-8021253292229",
+      "slug": "pecan-cookie-vegan-4oz",
+      "name": "Cookie de pecán",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "cookies",
+      "image": "/assets/Bernice-14-ba16b457.jpg",
+      "imageAlt": "Cookie de pecán",
+      "gallery": [
+        "/assets/Bernice-14-ba16b457.jpg",
+        "/assets/Two_Food_Photograhers-134_websize_noBG_fa3ec23a-bce9-42d7-944b-f3f970df7afa-737a966e.png"
+      ],
+      "availability": "available",
+      "fulfillment": "ready",
+      "leadTimeHours": 0,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "43854009663685",
+          "name": "Presentación estándar",
+          "price": 585000,
+          "available": true
+        }
+      ],
+      "order": 9,
+      "ingredients": ["Pecán tostada", "Chips de chocolate", "Jarabe de arce"]
+    },
+    {
+      "id": "ref-8128007602373",
+      "slug": "variety-box",
+      "name": "Caja de cookies surtidas",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "cookies",
+      "image": "/assets/5_bf189000-ffa0-4ee8-a5f8-9e53b812c0f3-c8fa1aed.png",
+      "imageAlt": "Caja de cookies surtidas",
+      "gallery": [
+        "/assets/5_bf189000-ffa0-4ee8-a5f8-9e53b812c0f3-c8fa1aed.png",
+        "/assets/4_59c25a83-70ad-4794-9279-963964bb7c54-bc2b3545.png"
+      ],
+      "availability": "available",
+      "fulfillment": "ready",
+      "leadTimeHours": 0,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "44169721381061",
+          "name": "Presentación estándar",
+          "price": 600000,
+          "available": true
+        }
+      ],
+      "order": 10,
+      "ingredients": []
+    },
+    {
+      "id": "ref-8131573940421",
+      "slug": "frozen-cookie-dough",
+      "name": "Masa para cookies",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "cookies",
+      "image": "/assets/frozencookiedough-a7336500.jpg",
+      "imageAlt": "Masa para cookies",
+      "gallery": ["/assets/frozencookiedough-a7336500.jpg"],
+      "availability": "available",
+      "fulfillment": "ready",
+      "leadTimeHours": 0,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "44183758569669",
+          "name": "Presentación estándar",
+          "price": 615000,
+          "available": true
+        }
+      ],
+      "order": 11,
+      "ingredients": []
+    },
+    {
+      "id": "ref-8228003020997",
+      "slug": "hazelnut-chocolate-ganache-cookie-4oz",
+      "name": "Cookie de avellanas y chocolate",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "cookies",
+      "image": "/assets/hazelnut-chocolate-ganache-cookie-1-03e2eec0.jpg",
+      "imageAlt": "Cookie de avellanas y chocolate",
+      "gallery": [
+        "/assets/hazelnut-chocolate-ganache-cookie-1-03e2eec0.jpg",
+        "/assets/hazelnut-chocolate-ganache-cookie-2-305ca802.png"
+      ],
+      "availability": "available",
+      "fulfillment": "ready",
+      "leadTimeHours": 0,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "44464254910661",
+          "name": "Presentación estándar",
+          "price": 630000,
+          "available": true
+        }
+      ],
+      "order": 12,
+      "ingredients": ["Chocolate amargo", "Caramelo salado", "Avellanas"]
+    },
+    {
+      "id": "ref-7866064208069",
+      "slug": "rainbow-birthday-cake",
+      "name": "Torta de cumpleaños",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "tortas",
+      "image": "/assets/Untitled_design_29-2b38c165.png",
+      "imageAlt": "Torta de cumpleaños",
+      "gallery": [
+        "/assets/Untitled_design_29-2b38c165.png",
+        "/assets/Untitled_design_30-a2858980.png"
+      ],
+      "availability": "available",
+      "fulfillment": "preorder",
+      "leadTimeHours": 48,
+      "featured": true,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "43932068053189",
+          "name": "Chica",
+          "price": 5500000,
+          "available": true
+        },
+        {
+          "id": "43932068085957",
+          "name": "Grande",
+          "price": 7000000,
+          "available": true
+        }
+      ],
+      "order": 13,
+      "ingredients": []
+    },
+    {
+      "id": "ref-7866063880389",
+      "slug": "full-frosting-rainbow-birthday-cake",
+      "name": "Torta de cumpleaños cubierta",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "tortas",
+      "image": "/assets/Bernice-5-ac43ad49.jpg",
+      "imageAlt": "Torta de cumpleaños cubierta",
+      "gallery": [
+        "/assets/Bernice-5-ac43ad49.jpg",
+        "/assets/Bernice-6-6781cfc4.jpg"
+      ],
+      "availability": "available",
+      "fulfillment": "preorder",
+      "leadTimeHours": 48,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "43932067856581",
+          "name": "Chica",
+          "price": 5600000,
+          "available": true
+        },
+        {
+          "id": "43932067889349",
+          "name": "Grande",
+          "price": 7100000,
+          "available": true
+        }
+      ],
+      "order": 14,
+      "ingredients": []
+    },
+    {
+      "id": "ref-7866061193413",
+      "slug": "chocolate-ganache-cake",
+      "name": "Torta de chocolate",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "tortas",
+      "image": "/assets/IMG_2112-5485255f.jpg",
+      "imageAlt": "Torta de chocolate",
+      "gallery": ["/assets/IMG_2112-5485255f.jpg"],
+      "availability": "available",
+      "fulfillment": "preorder",
+      "leadTimeHours": 48,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "43932067332293",
+          "name": "Chica",
+          "price": 5700000,
+          "available": true
+        },
+        {
+          "id": "43932067365061",
+          "name": "Grande",
+          "price": 7200000,
+          "available": true
+        }
+      ],
+      "order": 15,
+      "ingredients": []
+    },
+    {
+      "id": "ref-8108020957381",
+      "slug": "carrot-cake",
+      "name": "Carrot cake",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "tortas",
+      "image": "/assets/Bernice-4-c39f6a96.jpg",
+      "imageAlt": "Carrot cake",
+      "gallery": [
+        "/assets/Bernice-4-c39f6a96.jpg",
+        "/assets/Bernice-9-16442ba2.jpg"
+      ],
+      "availability": "available",
+      "fulfillment": "preorder",
+      "leadTimeHours": 48,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "44131184902341",
+          "name": "Chica",
+          "price": 5800000,
+          "available": true
+        },
+        {
+          "id": "50648136122565",
+          "name": "Grande",
+          "price": 7300000,
+          "available": true
+        }
+      ],
+      "order": 16,
+      "ingredients": []
+    },
+    {
+      "id": "ref-8113242013893",
+      "slug": "biscoff-cookie-butter-cake",
+      "name": "Torta de crema de galletitas",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "tortas",
+      "image": "/assets/1-41cb09f4.png",
+      "imageAlt": "Torta de crema de galletitas",
+      "gallery": ["/assets/1-41cb09f4.png", "/assets/2-88f05c9c.png"],
+      "availability": "available",
+      "fulfillment": "preorder",
+      "leadTimeHours": 48,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "44127435358405",
+          "name": "Chica",
+          "price": 5900000,
+          "available": true
+        },
+        {
+          "id": "44127435391173",
+          "name": "Grande",
+          "price": 7400000,
+          "available": true
+        }
+      ],
+      "order": 17,
+      "ingredients": []
+    },
+    {
+      "id": "ref-8787431620805",
+      "slug": "chocolate-brown-butter-cake",
+      "name": "Torta de chocolate y manteca dorada",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "tortas",
+      "image": "/assets/Bernice-BrownButterCake-03-5f85108d.jpg",
+      "imageAlt": "Torta de chocolate y manteca dorada",
+      "gallery": [
+        "/assets/Bernice-BrownButterCake-03-5f85108d.jpg",
+        "/assets/Bernice-BrownButterCake-04-04e903ce.jpg"
+      ],
+      "availability": "available",
+      "fulfillment": "preorder",
+      "leadTimeHours": 48,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "46025226387653",
+          "name": "Chica",
+          "price": 6000000,
+          "available": true
+        },
+        {
+          "id": "46025226420421",
+          "name": "Grande",
+          "price": 7500000,
+          "available": true
+        }
+      ],
+      "order": 18,
+      "ingredients": []
+    },
+    {
+      "id": "ref-8955631108293",
+      "slug": "lemon-poppyseed-cake",
+      "name": "Torta de limón",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "tortas",
+      "image": "/assets/LemonPoppyseed-01b-84e928d5.jpg",
+      "imageAlt": "Torta de limón",
+      "gallery": [
+        "/assets/LemonPoppyseed-01b-84e928d5.jpg",
+        "/assets/LemonPoppyseed-02b-749c13d4.jpg"
+      ],
+      "availability": "available",
+      "fulfillment": "preorder",
+      "leadTimeHours": 48,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "46659778969797",
+          "name": "Chica",
+          "price": 6100000,
+          "available": true
+        },
+        {
+          "id": "46659779002565",
+          "name": "Grande",
+          "price": 7600000,
+          "available": true
+        }
+      ],
+      "order": 19,
+      "ingredients": []
+    },
+    {
+      "id": "ref-9001234497733",
+      "slug": "honey-peach-cake",
+      "name": "Torta de duraznos",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "tortas",
+      "image": "/assets/honeycake-01-99d6e642.jpg",
+      "imageAlt": "Torta de duraznos",
+      "gallery": [
+        "/assets/honeycake-01-99d6e642.jpg",
+        "/assets/honeycake-03-af7b272a.jpg"
+      ],
+      "availability": "available",
+      "fulfillment": "preorder",
+      "leadTimeHours": 48,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "46850294776005",
+          "name": "Chica",
+          "price": 6200000,
+          "available": true
+        },
+        {
+          "id": "46850294808773",
+          "name": "Grande",
+          "price": 7700000,
+          "available": true
+        }
+      ],
+      "order": 20,
+      "ingredients": []
+    },
+    {
+      "id": "ref-7866063421637",
+      "slug": "celebration-cake",
+      "name": "Torta celebración",
+      "description": "Producto de ejemplo para preparar el catálogo de Brunette. La descripción, los ingredientes y las opciones reales están pendientes de confirmar.",
+      "category": "tortas",
+      "image": "/assets/celebrationscake2-cfb37e02.jpg",
+      "imageAlt": "Torta celebración",
+      "gallery": ["/assets/celebrationscake2-cfb37e02.jpg"],
+      "availability": "available",
+      "fulfillment": "preorder",
+      "leadTimeHours": 48,
+      "featured": false,
+      "active": true,
+      "isDemo": true,
+      "allergens": [],
+      "variants": [
+        {
+          "id": "43932066906309",
+          "name": "Presentación estándar",
+          "price": 6300000,
+          "available": true
+        }
+      ],
+      "order": 21,
+      "ingredients": []
+    }
+  ],
+  "branches": [
+    {
+      "id": "cafe",
+      "name": "Café Brunette",
+      "address": "Llavallol 4202",
+      "whatsapp": "",
+      "mapUrl": "",
+      "openingHours": [
+        {
+          "day": 0,
+          "closed": true,
+          "open": "09:00",
+          "close": "19:00"
+        },
+        {
+          "day": 1,
+          "closed": false,
+          "open": "09:00",
+          "close": "19:00"
+        },
+        {
+          "day": 2,
+          "closed": false,
+          "open": "09:00",
+          "close": "19:00"
+        },
+        {
+          "day": 3,
+          "closed": false,
+          "open": "09:00",
+          "close": "19:00"
+        },
+        {
+          "day": 4,
+          "closed": false,
+          "open": "09:00",
+          "close": "19:00"
+        },
+        {
+          "day": 5,
+          "closed": false,
+          "open": "09:00",
+          "close": "19:00"
+        },
+        {
+          "day": 6,
+          "closed": false,
+          "open": "09:00",
+          "close": "19:00"
+        }
+      ],
+      "pickupEnabled": true,
+      "deliveryEnabled": true,
+      "deliveryZone": "Zona de entrega de ejemplo: consultar por WhatsApp",
+      "deliveryFee": null,
+      "active": true,
+      "isDemo": true
+    },
+    {
+      "id": "mostrador",
+      "name": "Mostrador Brunette",
+      "address": "Asunción 4185",
+      "whatsapp": "",
+      "mapUrl": "",
+      "openingHours": [
+        {
+          "day": 0,
+          "closed": true,
+          "open": "09:00",
+          "close": "19:00"
+        },
+        {
+          "day": 1,
+          "closed": false,
+          "open": "09:00",
+          "close": "19:00"
+        },
+        {
+          "day": 2,
+          "closed": false,
+          "open": "09:00",
+          "close": "19:00"
+        },
+        {
+          "day": 3,
+          "closed": false,
+          "open": "09:00",
+          "close": "19:00"
+        },
+        {
+          "day": 4,
+          "closed": false,
+          "open": "09:00",
+          "close": "19:00"
+        },
+        {
+          "day": 5,
+          "closed": false,
+          "open": "09:00",
+          "close": "19:00"
+        },
+        {
+          "day": 6,
+          "closed": false,
+          "open": "09:00",
+          "close": "19:00"
+        }
+      ],
+      "pickupEnabled": true,
+      "deliveryEnabled": true,
+      "deliveryZone": "Zona de entrega de ejemplo: consultar por WhatsApp",
+      "deliveryFee": null,
+      "active": true,
+      "isDemo": true
+    }
+  ]
+}

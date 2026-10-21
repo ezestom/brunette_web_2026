@@ -1,0 +1,120 @@
+---
+import ReferenceProduct from "./ReferenceProduct.astro";
+import type { Content } from "../../lib/types";
+interface Props {
+  content: Content;
+}
+const { content } = Astro.props;
+const collections = content.categories.map((category) => ({
+  ...category,
+  products: content.products.filter((p) => p.category === category.id),
+}));
+const pageSize = 6;
+---
+
+<section
+  class="Section Collections_Browser_Section Parallax_Wrapper SectionPadded"
+  id="catalogo-inicio"
+>
+  <div
+    class="Collection_Browser_Tabs"
+    role="tablist"
+    aria-label="Categorías de antojos"
+  >
+    {collections.map((category, i) => (
+      <button
+        type="button"
+        role="tab"
+        aria-selected={i === 0 ? "true" : "false"}
+        aria-controls={"coleccion-" + category.id}
+        id={"tab-" + category.id}
+        class:list={["Collection_Browser_Tab_Button", i === 0 && "Selected"]}
+        data-id={category.id}
+      >
+        <span style={`border-color:${i % 2 ? "var(--pink)" : "var(--dark)"}`}>
+          {category.name}
+        </span>
+        <div
+          class="Back"
+          style={`background-color:${i % 2 ? "var(--pink)" : "var(--dark)"}`}
+        ></div>
+      </button>
+    ))}
+  </div>
+  <div class="Collection_Browser_Content">
+    {collections.map((category, i) => (
+      <div
+        role="tabpanel"
+        aria-labelledby={"tab-" + category.id}
+        id={"coleccion-" + category.id}
+        class:list={[
+          "Collection_Browser_Products_Container",
+          i === 0 && "Open",
+        ]}
+        data-id={category.id}
+      >
+        {Array.from(
+          {
+            length: Math.max(1, Math.ceil(category.products.length / pageSize)),
+          },
+          (_, page) => (
+            <div
+              class:list={[
+                "Collection_Browser_Product_Page",
+                page === 0 && "Open",
+              ]}
+              data-page={page}
+            >
+              {category.products
+                .slice(page * pageSize, (page + 1) * pageSize)
+                .map((product) => (
+                  <div class="Collection_Browser_Product">
+                    <ReferenceProduct
+                      product={product}
+                      currency={content.settings.currency}
+                    />
+                  </div>
+                ))}
+              {!category.products.length && <p>Próximamente, más antojos.</p>}
+            </div>
+          ),
+        )}
+        <div class="Collection_Browser_Bottom">
+          <div class="Collection_Browser_Navigation">
+            <button
+              type="button"
+              class="Collection_Browser_Arrow Left"
+              aria-label={"Página anterior de " + category.name}
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m5 12 6-6m-6 6 6 6m-6-6h14"
+                />
+              </svg>
+            </button>
+            <button
+              type="button"
+              class="Collection_Browser_Arrow Right"
+              aria-label={"Página siguiente de " + category.name}
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m19 12-6-6m6 6-6 6m6-6H5"
+                />
+              </svg>
+            </button>
+          </div>
+          <a class="Grow_Anim" href={"/catalogo?categoria=" + category.id}>
+            Ver todo
+          </a>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,419 @@
+---
+import "../styles/global.css";
+import CartDrawer from "../components/CartDrawer";
+import ReferenceCurtains from "../components/reference/ReferenceCurtains.astro";
+import type { Content } from "../lib/types";
+interface Props {
+  content: Content;
+  title?: string;
+  description?: string;
+  hero?: boolean;
+}
+const { content, title, description, hero = false } = Astro.props;
+const { settings, home, branches, categories } = content;
+Astro.response.headers.set("Cache-Control", "no-store");
+const styles = [
+  "style-c950c7a6.css",
+  "parallax-1ad68a7b.css",
+  "utils-c2f63d0c.css",
+  "menu-bfe56877.css",
+  "search-2bf08d45.css",
+  "cart-drawer-eccc18f4.css",
+  "quantity-selector-dd11c4e4.css",
+  "menu-drawer-199d2d5a.css",
+  "hero-663ebb97.css",
+  "title-text-b7d0529f.css",
+  "collection-display-5bc31bf4.css",
+  "product-item-fb81522c.css",
+  "marquee-b2a1f91d.css",
+  "arches-display-f64ed2b5.css",
+  "window-image-dd26fdc9.css",
+  "collections-browser-ea48c92c.css",
+  "testimonials-951861af.css",
+  "collections-cta-94c4d28a.css",
+  "footer-10838091.css",
+  "product-page-83feeef0.css",
+  "collection-page-645db36f.css",
+  "other-collection-856f783b.css",
+  "timeline-8d4983f7.css",
+  "contact-form-12d3e9cf.css",
+];
+const isBrunette = settings.name.trim().toLocaleLowerCase("es") === "brunette";
+const footerWordmark = isBrunette
+  ? [
+      { text: "B", italic: true },
+      { text: "r", italic: false },
+      { text: "u", italic: true },
+      { text: "ne", italic: false },
+      { text: "tt", italic: true },
+      { text: "e", italic: false },
+    ]
+  : [{ text: settings.name, italic: false }];
+const links = [
+  ...categories.map((c) => ({
+    href: "/catalogo?categoria=" + c.id,
+    label: c.name,
+  })),
+  { href: "/nosotros", label: "Nosotros" },
+  { href: "/sucursales", label: "Encontranos" },
+  { href: "/contacto", label: "Contacto" },
+];
+---
+
+<!doctype html>
+<html
+  lang="es"
+  style={`--green:${settings.colorPrimary};--dark:${settings.colorPrimary};--blue:${settings.colorPrimary};--cream:${settings.colorBackground};--beige:${settings.colorBackground};--pink:${settings.colorAccent};--menu-text-color:${hero ? "var(--beige)" : "var(--dark)"};`}
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description || settings.description} />
+    <meta name="theme-color" content={settings.colorPrimary} />
+    <title>
+      {
+        title
+          ? `${title} · ${settings.name}`
+          : `${settings.name} · ${settings.tagline}`
+      }
+    </title>
+    <link
+      id="favicon"
+      rel="icon"
+      type="image/png"
+      href="/assets/favicon_cool-796b68b2.png"
+    />
+    <link
+      rel="preload"
+      href="/assets/ApfelGrotezk-Fett-a421b105.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    {styles.map((name) => (
+      <link rel="stylesheet" href={"/assets/" + name} />
+    ))}
+    <link rel="stylesheet" href="/reference-integration.css" />
+    <script is:inline>
+      window.favicon1 = "/assets/favicon_cool_0-4e0720b4.png";
+      window.favicon2 = "/assets/favicon_cool_1-6be5c985.png";
+    </script>
+    <script is:inline src="/assets/gsap.min-fce7bc2a.js"></script>
+    <script is:inline src="/assets/ScrollTrigger.min-02dea619.js"></script>
+  </head>
+  <body class:list={["reference-site", hero && "has-hero"]}>
+    <ReferenceCurtains />
+    <a class="skip-link" href="#contenido">
+      Ir al contenido
+    </a>
+    <div class="overlay-menu"></div>
+    <header id="section-header" class:list={[!hero && "Filled"]}>
+      <a
+        href="/"
+        class:list={["site_logo", settings.logo && "has-image"]}
+        aria-label={`${settings.name}, inicio`}
+      >
+        <div class:list={["Logo_Dark Contain_Fluid", !hero && "Shown"]}>
+          {settings.logo ? (
+            <img
+              src={settings.logo}
+              alt={settings.name}
+              width="400"
+              height="400"
+            />
+          ) : (
+            <span>{settings.name}</span>
+          )}
+        </div>
+        <div
+          class:list={["Logo_Light Contain_Fluid", hero && "Shown"]}
+          aria-hidden="true"
+        >
+          {settings.logo ? (
+            <img src={settings.logo} alt="" width="400" height="400" />
+          ) : (
+            <span>{settings.name}</span>
+          )}
+        </div>
+      </a>
+      <nav aria-label="Principal">
+        <ul class="main-menu">
+          {links.map((link) => (
+            <li>
+              <a class="Grow_Anim" href={link.href}>
+                {link.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <div class="main-menu_right">
+          <CartDrawer content={content} client:load />
+          <button
+            class="menu_icon search"
+            data-action="toggle-search"
+            aria-label="Buscar productos"
+            aria-expanded="false"
+            aria-controls="site-search"
+          >
+            <svg class="Icon" viewBox="0 0 18 18" aria-hidden="true">
+              <g transform="translate(1 1)" stroke="currentColor" fill="none">
+                <path d="m16 16-5-5"></path>
+                <circle cx="6.4" cy="6.4" r="6.4"></circle>
+              </g>
+            </svg>
+          </button>
+          <button
+            class="menu_icon burger"
+            data-action="open-side-menu"
+            aria-label="Abrir menú"
+            aria-expanded="false"
+            aria-controls="mobile-nav"
+          >
+            <svg class="Icon" viewBox="0 0 20 14" aria-hidden="true">
+              <path
+                d="M0 14v-1h20v1H0zm0-7.5h20v1H0v-1zM0 0h20v1H0V0z"
+                fill="currentColor"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </nav>
+      <div class="Search_Popup" id="site-search" inert>
+        <div class="Search_Popup_Inner">
+          <form action="/catalogo" class="Search Form">
+            <label class="sr-only" for="site-query">
+              Buscar productos
+            </label>
+            <input
+              id="site-query"
+              type="search"
+              name="q"
+              class="Form__Input"
+              placeholder="¿Qué se te antoja?"
+            />
+            <div class="Form_Button Form__Submit Relative_To_Mouse">
+              <button type="submit">Buscar</button>
+            </div>
+          </form>
+          <button
+            class="Search_Close"
+            data-action="close-search"
+            aria-label="Cerrar búsqueda"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+    </header>
+    <dialog class="Menu_Drawer" id="mobile-nav" aria-label="Menú principal">
+      <div class="Drawer_Top">
+        <a
+          href="/"
+          class:list={["Logo", settings.logo && "brand-image"]}
+          aria-label={`${settings.name}, inicio`}
+        >
+          {settings.logo ? (
+            <img
+              src={settings.logo}
+              alt={settings.name}
+              width="640"
+              height="640"
+            />
+          ) : (
+            settings.name
+          )}
+        </a>
+        <button
+          class="Drawer_Close"
+          data-action="close-side-menu"
+          aria-label="Cerrar menú"
+        >
+          ✕
+        </button>
+      </div>
+      <div class="Menu_Drawer_Content">
+        <nav class="Menu_Drawer_Links" aria-label="Menú móvil">
+          {links.map((link) => (
+            <a class="Menu_Drawer_Link Grow_Anim" href={link.href}>
+              {link.label}
+            </a>
+          ))}
+        </nav>
+        <a
+          class="Menu_Drawer_Instagram_Link"
+          href={settings.instagram}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Seguinos en Instagram ↗
+        </a>
+      </div>
+      <div class="Drawer_Bottom">
+        <div class="Drawer_Changing_Images">
+          {content.products.slice(0, 3).map((p) => (
+            <div class="Fluid">
+              <img src={p.image} alt="" width="480" height="600" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </dialog>
+    <main id="contenido">
+      <slot />
+    </main>
+    <section class="Section Newsletter_Section SectionPadded Parallax_Wrapper">
+      <div class="Newsletter_Container">
+        <h2 class="Cool_Text_Anim Lines">
+          Siempre hay lugar
+          <br />
+          para un antojo
+        </h2>
+        <p>{home.showAnnouncement ? home.announcement : settings.tagline}</p>
+        <a
+          class="Form_Button WhatsApp_CTA Relative_To_Mouse"
+          href={`https://wa.me/${settings.whatsapp}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <span>Hablemos por WhatsApp ↗</span>
+        </a>
+        <div class="Newsletter_Floating_Img Parallax_Back Left">
+          <img
+            src="/assets/cake_full-514b87e0.svg"
+            alt=""
+            width="200"
+            height="182"
+          />
+        </div>
+        <div
+          class="Newsletter_Floating_Img Parallax_Front Right"
+          data-p-displace="-100%"
+        >
+          <img
+            src="/assets/cookie_full-6a6ab5f2.svg"
+            alt=""
+            width="200"
+            height="109"
+          />
+        </div>
+      </div>
+    </section>
+    <div class="Footer_Space">
+      <div class="Footer_Wrapper">
+        <footer class="Section SectionPadded">
+          <div class="Footer_Top">
+            <div class="Footer_Infos">
+              <h3>{settings.name}</h3>
+              {branches.map((b) => (
+                <p>
+                  <br />
+                  {b.address}
+                </p>
+              ))}
+              <div class="Footer_Socials">
+                <a href={settings.instagram} target="_blank" rel="noreferrer">
+                  Seguinos en Instagram ↗
+                </a>
+              </div>
+            </div>
+            <div class="Footer_Menu">
+              <ul>
+                {categories.map((c) => (
+                  <li>
+                    <a class="Grow_Anim" href={"/catalogo?categoria=" + c.id}>
+                      {c.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div class="Footer_Menu">
+              <ul>
+                <li>
+                  <a class="Grow_Anim" href="/nosotros">
+                    Nosotros
+                  </a>
+                </li>
+                <li>
+                  <a class="Grow_Anim" href="/sucursales">
+                    Sucursales
+                  </a>
+                </li>
+                <li>
+                  <a class="Grow_Anim" href="/contacto">
+                    Contacto
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="Footer_Newsletter">
+              <h3>{settings.tagline}</h3>
+              <p>
+                Retiro en local y entregas
+                <br />a coordinar con nuestro equipo.
+              </p>
+              {settings.whatsapp && (
+                <a
+                  href={`https://wa.me/${settings.whatsapp}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  WhatsApp ↗
+                </a>
+              )}
+            </div>
+          </div>
+          <div class="Footer_Middle">
+            <span class="Footer_Big_Logo" role="img" aria-label={settings.name}>
+              <span
+                class:list={[
+                  "Footer_Big_Logo_Text",
+                  isBrunette && "brunette-wordmark",
+                ]}
+                aria-hidden="true"
+              >
+                {footerWordmark.map((part) => (
+                  <span class:list={[part.italic && "brand-italic"]}>
+                    {part.text}
+                  </span>
+                ))}
+              </span>
+            </span>
+          </div>
+          <div class="Footer_Bottom">
+            <div class="Footer_Copy">
+              © {new Date().getFullYear()}
+              {settings.name}
+            </div>
+            <div class="Footer_Terms">
+              <a
+                class="developer-credit"
+                href="https://ezestom.is-a.dev/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Developed and designed by Ezestom"
+              >
+                <span>Developed and designed by</span>
+                <img
+                  src="/assets/ezestom-logo.webp"
+                  alt="Ezestom"
+                  width="10"
+                  height="10"
+                  loading="lazy"
+                />
+              </a>
+            </div>
+            <div class="Footer_Casa">
+              <a href="/admin">Acceso del equipo ↗</a>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <canvas id="js-front-canvas" aria-hidden="true"></canvas>
+    <script>
+      import "../scripts/reference-motion";
+      import "../scripts/reference-navigation";
+    </script>
+  </body>
+</html>
