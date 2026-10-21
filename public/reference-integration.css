@@ -513,8 +513,32 @@ html.has-modal {
   overflow-y: auto;
   touch-action: pan-y;
 }
+.reference-site header {
+  transition: padding 0.3s ease;
+}
 .reference-site header:before {
-  transition: transform 0.35s var(--ulu-curve);
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  transform: none !important;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06);
+}
+.reference-site header.Filled:before,
+.reference-site header.FilledSearch:before {
+  transform: none !important;
+  opacity: 1;
+}
+.reference-site .main-menu li a,
+.reference-site .Icon {
+  transition: color 0.3s ease;
 }
 .reference-site .whatsapp-ready {
   width: 100%;

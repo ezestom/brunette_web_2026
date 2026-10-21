@@ -143,10 +143,11 @@ async function initReferenceMotion() {
   }
   const darkSections = all("main .Dark_Section");
   function updateMenuColor() {
+    const headerThreshold = (header?.offsetHeight || 90) * 0.7;
     menuColor(
       darkSections.some((section) => {
         const bounds = section.getBoundingClientRect();
-        return bounds.top <= 20 && bounds.bottom > 20;
+        return bounds.top <= 20 && bounds.bottom >= headerThreshold;
       }),
     );
   }
