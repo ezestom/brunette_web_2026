@@ -110,30 +110,19 @@ const links = [
     <header id="section-header" class:list={[!hero && "Filled"]}>
       <a
         href="/"
-        class:list={["site_logo", settings.logo && "has-image"]}
+        class="site_logo brand-wordmark"
         aria-label={`${settings.name}, inicio`}
       >
-        <div class:list={["Logo_Dark Contain_Fluid", !hero && "Shown"]}>
-          {settings.logo ? (
-            <img
-              src={settings.logo}
-              alt={settings.name}
-              width="400"
-              height="400"
-            />
-          ) : (
-            <span>{settings.name}</span>
-          )}
+        <div class:list={["Logo_Dark", !hero && "Shown"]}>
+          <span class="brand-title">{settings.name.toLowerCase()}</span>
+          <span class="brand-tagline">{settings.tagline}</span>
         </div>
         <div
-          class:list={["Logo_Light Contain_Fluid", hero && "Shown"]}
+          class:list={["Logo_Light", hero && "Shown"]}
           aria-hidden="true"
         >
-          {settings.logo ? (
-            <img src={settings.logo} alt="" width="400" height="400" />
-          ) : (
-            <span>{settings.name}</span>
-          )}
+          <span class="brand-title">{settings.name.toLowerCase()}</span>
+          <span class="brand-tagline">{settings.tagline}</span>
         </div>
       </a>
       <nav aria-label="Principal">
@@ -209,19 +198,11 @@ const links = [
       <div class="Drawer_Top">
         <a
           href="/"
-          class:list={["Logo", settings.logo && "brand-image"]}
+          class="Logo brand-wordmark"
           aria-label={`${settings.name}, inicio`}
         >
-          {settings.logo ? (
-            <img
-              src={settings.logo}
-              alt={settings.name}
-              width="640"
-              height="640"
-            />
-          ) : (
-            settings.name
-          )}
+          <span class="brand-title">{settings.name.toLowerCase()}</span>
+          <span class="brand-tagline">{settings.tagline}</span>
         </a>
         <button
           class="Drawer_Close"
