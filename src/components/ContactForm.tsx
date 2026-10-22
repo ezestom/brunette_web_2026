@@ -33,10 +33,11 @@ export default function ContactForm({
       message = value("message");
 
     if (!firstName || !message) {
-      setError("Completá tu nombre y contanos qué necesitás.");
+      setError("Completá tu nombre y contanos qué necesitás antes de enviar.");
       sileo.warning({
         title: "Campos incompletos",
         description: "Completá tu nombre y el mensaje antes de enviar.",
+        duration: 5000,
       });
       return;
     }
@@ -95,6 +96,7 @@ export default function ContactForm({
           title: "¡Mensaje enviado con éxito!",
           description:
             "Tu consulta fue enviada a ezequielstom@gmail.com. Te responderemos a la brevedad.",
+          duration: 7000,
         });
       } else {
         throw new Error(result.message || "Error al enviar formulario");
@@ -105,9 +107,10 @@ export default function ContactForm({
         title: "Error al enviar el correo",
         description:
           "No se pudo enviar el correo directo. Podés enviarnos tu consulta por WhatsApp.",
+        duration: 7000,
       });
       setError(
-        "No se pudo enviar por correo. Usá el botón de WhatsApp a continuación para enviarlo directo.",
+        "No se pudo enviar por correo directo. Usá el botón de WhatsApp a continuación para enviarlo directo.",
       );
     } finally {
       setBusy(false);
@@ -128,130 +131,145 @@ export default function ContactForm({
 
   return (
     <>
-      <Toaster position="top-right" theme="light" />
-      <form
-        className="Contact_Form"
-        onSubmit={submit}
-        onChange={() => {
-          if (sent) setSent(false);
-          setError("");
-        }}
-      >
-        <div className="Form_Field">
-          <label className="sr-only" htmlFor="contact-first-name">
-            Nombre
-          </label>
-          <input
-            id="contact-first-name"
-            name="firstName"
-            placeholder="Nombre"
-            autoComplete="given-name"
-            maxLength={80}
-            required
-            disabled={busy}
-          />
-        </div>
-        <div className="Form_Field">
-          <label className="sr-only" htmlFor="contact-last-name">
-            Apellido
-          </label>
-          <input
-            id="contact-last-name"
-            name="lastName"
-            placeholder="Apellido"
-            autoComplete="family-name"
-            maxLength={80}
-            disabled={busy}
-          />
-        </div>
-        <div className="Form_Field">
-          <label className="sr-only" htmlFor="contact-phone">
-            Teléfono
-          </label>
-          <input
-            id="contact-phone"
-            name="phone"
-            type="tel"
-            placeholder="Teléfono"
-            autoComplete="tel"
-            maxLength={40}
-            disabled={busy}
-          />
-        </div>
-        <div className="Form_Field">
-          <label className="sr-only" htmlFor="contact-email">
-            Email
-          </label>
-          <input
-            id="contact-email"
-            name="email"
-            type="email"
-            placeholder="Email"
-            autoComplete="email"
-            maxLength={200}
-            disabled={busy}
-          />
-        </div>
-        <div className="Form_Area">
-          <label className="sr-only" htmlFor="contact-message">
-            Contanos qué necesitás
-          </label>
-          <textarea
-            id="contact-message"
-            name="message"
-            placeholder="Contanos qué necesitás"
-            maxLength={2000}
-            required
-            rows={8}
-            disabled={busy}
-          />
-        </div>
+      <Toaster position="top-center" theme="light" />
 
-        {error && (
-          <p className="form-alert contact-alert" role="alert">
-            {error}
+      {sent ? (
+        <div className="contact-success-state">
+          <div className="contact-success-badge-row">
+            <div className="contact-success-icon">✳</div>
+            <span className="contact-success-badge">
+              Consulta enviada con éxito
+            </span>
+          </div>
+          <h2 className="contact-success-title">
+            ¡Muchas gracias por comunicarte!
+          </h2>
+          <p className="contact-success-description">
+            Recibimos tu mensaje correctamente. Nuestro equipo lo revisará y te
+            responderá a la brevedad.
           </p>
-        )}
-
-        {sent && (
-          <div
-            className="contact-success-card"
-            style={{
-              padding: "1.5rem",
-              background: "var(--beige)",
-              borderRadius: "1.2rem",
-              border: "2px solid var(--blue)",
-              width: "100%",
-              margin: "1rem 0",
-            }}
-          >
-            <h3
-              style={{
-                fontFamily: "var(--title-font)",
-                fontSize: "1.8rem",
-                textTransform: "uppercase",
-                margin: "0 0 0.5rem",
+          <div className="contact-success-chip">
+            <span>
+              ✉ Destinatario: <strong>ezequielstom@gmail.com</strong>
+            </span>
+          </div>
+          <div className="contact-success-actions">
+            <button
+              type="button"
+              className="contact-success-reset-btn"
+              onClick={() => {
+                setSent(false);
+                setPrepared("");
+                setError("");
               }}
             >
-              ¡Mensaje enviado!
-            </h3>
-            <p style={{ margin: 0, opacity: 0.85 }}>
-              Muchas gracias por comunicarte. El mensaje fue enviado a nuestro
-              correo y te responderemos a la brevedad.
-            </p>
+              <span>Enviar otra consulta</span>
+              <span aria-hidden="true">↺</span>
+            </button>
+            {prepared && (
+              <a
+                href={prepared}
+                target="_blank"
+                rel="noreferrer"
+                className="contact-success-wa-link"
+              >
+                <span>¿Es urgente? Escribinos por WhatsApp</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            )}
           </div>
-        )}
-
-        {prepared && (error || sent) && (
-          <div className="contact-ready" style={{ marginTop: "1rem" }}>
-            <WhatsAppMessage
-              url={prepared}
-              linkText="O consultanos directamente por WhatsApp"
+        </div>
+      ) : (
+        <form
+          className="Contact_Form"
+          onSubmit={submit}
+          onChange={() => setError("")}
+        >
+          <div className="Form_Field">
+            <label className="sr-only" htmlFor="contact-first-name">
+              Nombre
+            </label>
+            <input
+              id="contact-first-name"
+              name="firstName"
+              placeholder="Nombre"
+              autoComplete="given-name"
+              maxLength={80}
+              required
+              disabled={busy}
             />
           </div>
-        )}
+          <div className="Form_Field">
+            <label className="sr-only" htmlFor="contact-last-name">
+              Apellido
+            </label>
+            <input
+              id="contact-last-name"
+              name="lastName"
+              placeholder="Apellido"
+              autoComplete="family-name"
+              maxLength={80}
+              disabled={busy}
+            />
+          </div>
+          <div className="Form_Field">
+            <label className="sr-only" htmlFor="contact-phone">
+              Teléfono
+            </label>
+            <input
+              id="contact-phone"
+              name="phone"
+              type="tel"
+              placeholder="Teléfono"
+              autoComplete="tel"
+              maxLength={40}
+              disabled={busy}
+            />
+          </div>
+          <div className="Form_Field">
+            <label className="sr-only" htmlFor="contact-email">
+              Email
+            </label>
+            <input
+              id="contact-email"
+              name="email"
+              type="email"
+              placeholder="Email"
+              autoComplete="email"
+              maxLength={200}
+              disabled={busy}
+            />
+          </div>
+          <div className="Form_Area">
+            <label className="sr-only" htmlFor="contact-message">
+              Contanos qué necesitás
+            </label>
+            <textarea
+              id="contact-message"
+              name="message"
+              placeholder="Contanos qué necesitás"
+              maxLength={2000}
+              required
+              rows={8}
+              disabled={busy}
+            />
+          </div>
 
-        {!sent && (
+          {error && (
+            <p className="form-alert contact-alert" role="alert">
+              {error}
+            </p>
+          )}
+
+          {error && prepared && (
+            <div className="contact-ready" style={{ marginTop: "1rem" }}>
+              <WhatsAppMessage
+                url={prepared}
+                linkText="Enviar consulta por WhatsApp"
+              />
+            </div>
+          )}
+
           <div className="Form_Zone">
             <div
               className="Form_Button Form__Submit Relative_To_Mouse"
@@ -263,8 +281,8 @@ export default function ContactForm({
               </button>
             </div>
           </div>
-        )}
-      </form>
+        </form>
+      )}
     </>
   );
 }

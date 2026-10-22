@@ -1,5 +1,7 @@
 ---
 import "../styles/global.css";
+import "sileo/styles.css";
+import { Toaster } from "sileo";
 import CartDrawer from "../components/CartDrawer";
 import ReferenceCurtains from "../components/reference/ReferenceCurtains.astro";
 import type { Content } from "../lib/types";
@@ -115,28 +117,21 @@ const links = [
       >
         <div class:list={["Logo_Dark", !hero && "Shown"]}>
           <span class="brand-title header-brand-wordmark">
-            {
-              footerWordmark.map((part) => (
-                <span class:list={[part.italic && "brand-italic"]}>
-                  {part.text}
-                </span>
-              ))
-            }
+            {footerWordmark.map((part) => (
+              <span class:list={[part.italic && "brand-italic"]}>
+                {part.text}
+              </span>
+            ))}
           </span>
           <span class="brand-tagline">{settings.tagline}</span>
         </div>
-        <div
-          class:list={["Logo_Light", hero && "Shown"]}
-          aria-hidden="true"
-        >
+        <div class:list={["Logo_Light", hero && "Shown"]} aria-hidden="true">
           <span class="brand-title header-brand-wordmark">
-            {
-              footerWordmark.map((part) => (
-                <span class:list={[part.italic && "brand-italic"]}>
-                  {part.text}
-                </span>
-              ))
-            }
+            {footerWordmark.map((part) => (
+              <span class:list={[part.italic && "brand-italic"]}>
+                {part.text}
+              </span>
+            ))}
           </span>
           <span class="brand-tagline">{settings.tagline}</span>
         </div>
@@ -218,13 +213,11 @@ const links = [
           aria-label={`${settings.name}, inicio`}
         >
           <span class="brand-title header-brand-wordmark">
-            {
-              footerWordmark.map((part) => (
-                <span class:list={[part.italic && "brand-italic"]}>
-                  {part.text}
-                </span>
-              ))
-            }
+            {footerWordmark.map((part) => (
+              <span class:list={[part.italic && "brand-italic"]}>
+                {part.text}
+              </span>
+            ))}
           </span>
           <span class="brand-tagline">{settings.tagline}</span>
         </a>
@@ -422,6 +415,7 @@ const links = [
         </footer>
       </div>
     </div>
+    <Toaster client:load position="top-center" theme="light" />
     <canvas id="js-front-canvas" aria-hidden="true"></canvas>
     <script>
       import "../scripts/reference-motion";

@@ -25,69 +25,6 @@ async function initReferenceMotion() {
   };
   const reveal = (target, vars) => !reduced && gsap?.from(target, vars);
 
-  // Gentle wheel pacing to decelerate scroll rhythm so parallax and reveals breathe
-  if (!reduced) {
-    let targetScrollY = window.scrollY;
-    let isSmoothing = false;
-
-    const smoothScrollTick = () => {
-      const current = window.scrollY;
-      const diff = targetScrollY - current;
-      if (Math.abs(diff) < 0.8) {
-        window.scrollTo(0, targetScrollY);
-        isSmoothing = false;
-        return;
-      }
-      window.scrollTo(0, current + diff * 0.14);
-      requestAnimationFrame(smoothScrollTick);
-    };
-
-    window.addEventListener(
-      "wheel",
-      (e) => {
-        if (e.ctrlKey || e.metaKey || e.altKey) return;
-        if (document.documentElement.classList.contains("has-modal")) return;
-        const target = e.target;
-        if (
-          target &&
-          typeof target.closest === "function" &&
-          target.closest(
-            ".cart-dialog, .Menu_Drawer, dialog, textarea, input, select",
-          )
-        ) {
-          return;
-        }
-
-        e.preventDefault();
-        const maxScroll =
-          document.documentElement.scrollHeight - window.innerHeight;
-        // Dampen wheel impulse to ~65% for a calmer, luxurious scroll rhythm
-        const delta = e.deltaY * 0.65;
-        targetScrollY = Math.max(
-          0,
-          Math.min(
-            maxScroll,
-            (isSmoothing ? targetScrollY : window.scrollY) + delta,
-          ),
-        );
-        if (!isSmoothing) {
-          isSmoothing = true;
-          requestAnimationFrame(smoothScrollTick);
-        }
-      },
-      { passive: false },
-    );
-
-    window.addEventListener(
-      "scroll",
-      () => {
-        if (!isSmoothing) {
-          targetScrollY = window.scrollY;
-        }
-      },
-      { passive: true },
-    );
-  }
   const hero = one(".Hero_Wrapper.Parallax_Wrapper");
   all(".Hero_Wrapper .Parallax_Back_Hero").forEach((back) => {
     if (innerWidth <= 768) return;

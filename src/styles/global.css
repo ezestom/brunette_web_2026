@@ -1731,3 +1731,14 @@ small,
     height: 200px;
   }
 }
+
+/* Sileo Toast Styling and Positioning */
+[data-sileo-viewport] {
+  z-index: 999999 !important;
+  top: 96px !important;
+}
+[data-sileo-toast] {
+  font-family: var(--text-font, sans-serif) !important;
+  box-shadow: 0 16px 40px rgba(28, 53, 44, 0.22) !important;
+}
+
