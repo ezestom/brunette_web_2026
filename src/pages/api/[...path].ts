@@ -4,6 +4,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import sharp from "sharp";
 import { getPublicContent } from "../../lib/content.ts";
+import { presentationMode } from "../../lib/deployment.ts";
 import {
   database,
   dataDir,
@@ -40,6 +41,11 @@ export const ALL: APIRoute = async (ctx) => {
   try {
     if (method === "GET" && route === "catalog")
       return json(getPublicContent());
+    if (presentationMode)
+      return json(
+        { error: "Esta demo no incluye edición ni cuentas de administración." },
+        404,
+      );
     if (
       !["GET", "HEAD"].includes(method) &&
       request.headers.get("origin") !== new URL(request.url).origin

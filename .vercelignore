@@ -1,0 +1,7 @@
+data/
+backups/
+.env
+.env.*
+!.env.example
+test-results/
+research/

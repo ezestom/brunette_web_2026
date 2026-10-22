@@ -6,9 +6,11 @@ import WhatsAppMessage from "./WhatsAppMessage";
 export default function ContactForm({
   businessName,
   whatsapp,
+  demo = false,
 }: {
   businessName: string;
   whatsapp: string;
+  demo?: boolean;
 }) {
   const [prepared, setPrepared] = useState(""),
     [error, setError] = useState(""),
@@ -48,7 +50,7 @@ export default function ContactForm({
     const number = whatsapp.replace(/\D/g, "");
     if (/^\d{8,15}$/.test(number)) {
       const text = [
-        `¡Hola ${businessName}! Quiero hacer una consulta:`,
+        `¡Hola ${businessName}! Quiero hacer una consulta${demo ? " DE PRUEBA" : ""}:`,
         "",
         message,
         "",
@@ -57,6 +59,17 @@ export default function ContactForm({
         ...(email ? [`Email: ${email}`] : []),
       ].join("\n");
       setPrepared(`https://wa.me/${number}?text=${encodeURIComponent(text)}`);
+    }
+
+    if (demo) {
+      setBusy(false);
+      sileo.success({
+        title: "Consulta de demostración preparada",
+        description:
+          "Podés revisar el mensaje de WhatsApp. Esta demo no envía correos.",
+        duration: 6000,
+      });
+      return;
     }
 
     try {
@@ -261,7 +274,7 @@ export default function ContactForm({
             </p>
           )}
 
-          {error && prepared && (
+          {(error || demo) && prepared && (
             <div className="contact-ready" style={{ marginTop: "1rem" }}>
               <WhatsAppMessage
                 url={prepared}
@@ -277,7 +290,11 @@ export default function ContactForm({
               onMouseLeave={ripple}
             >
               <button type="submit" disabled={busy}>
-                {busy ? "Enviando mensaje..." : "Enviar mensaje"}
+                {demo
+                  ? "Preparar consulta de prueba"
+                  : busy
+                    ? "Enviando mensaje..."
+                    : "Enviar mensaje"}
               </button>
             </div>
           </div>

@@ -183,4 +183,53 @@ Verificación: `npm test`, `npm run build` y `node scripts/menu-qa.cjs` con el
 servidor iniciado. La prueba de navegador cubre ambas vistas, detalle, galería,
 cantidad, carrito, API pública y móvil. Capturas en `test-results/menu-*.png`.
 
+## Demo independiente en Vercel
+
+Hay dos destinos dentro del mismo proyecto:
+
+| Destino | Compilación | Contenido y edición |
+| --- | --- | --- |
+| Render | `npm run build` y `npm start` | SQLite, fotos cargadas y panel completos. |
+| Vercel | `npm run build:vercel` | Copia pública de presentación, independiente de Render, sin panel ni escrituras. |
+
+Para actualizar la copia de presentación desde el contenido **publicado local**:
+
+```powershell
+npm run demo:export
+```
+
+El comando genera `content/presentation.json` y copia únicamente las imágenes
+cargadas que ese contenido utiliza a `public/presentation-media/`. No exporta
+usuarios, contraseñas, borradores, sesiones ni la base de datos. Estos archivos
+públicos se versionan junto con el código. El modo de prueba se conserva activo.
+Las modificaciones posteriores del panel de Render no se sincronizan con la demo;
+hay que actualizar la copia y desplegar de nuevo cuando se quiera mostrarlas.
+
+En Vercel, importar el repositorio en el proyecto `brunette-web-2026`, con:
+
+- Framework: **Astro**.
+- Carpeta raíz: la raíz del repositorio.
+- Node.js: **24.x**.
+- Build Command: `npm run build:vercel` (ya declarado en `vercel.json`).
+- Output Directory: dejar la configuración automática del adaptador.
+- No hace falta una URL de Render ni credenciales de la base de datos.
+
+La compilación incorpora el modo de presentación en el paquete del servidor;
+no depende de definir una variable adicional durante la ejecución en Vercel.
+Las fichas, filtros, carta, carrito y preparación de WhatsApp funcionan con la
+API de catálogo local de la demo. Contacto prepara una consulta de prueba y no
+envía correos reales. El panel y sus APIs están desactivados en este destino.
+Las páginas llevan `noindex` para no indexar la presentación como sitio real.
+
+Para probar localmente: `npm run demo:dev`. El servidor toma el siguiente puerto
+libre a partir de 4321. `node scripts/presentation-qa.cjs` usa 4323 por defecto;
+`QA_BASE_URL` permite elegir otro puerto. La prueba comprueba que no haya
+solicitudes a Render ni a servicios externos de correo.
+
+`npm run build:vercel` verifica que el paquete desplegable no contenga bases de
+datos, archivos de acceso ni `.env`. Después se puede comprobar la función ya
+compilada con `node scripts/vercel-runtime-qa.mjs`. La dependencia de rutas del
+adaptador fija `path-to-regexp` 6.3.0 mediante `overrides` para usar la versión
+corregida dentro de la misma versión mayor.
+
 # brunette_web_2026

@@ -5,6 +5,7 @@ import { Toaster } from "sileo";
 import CartDrawer from "../components/CartDrawer";
 import ReferenceCurtains from "../components/reference/ReferenceCurtains.astro";
 import type { Content } from "../lib/types";
+import { presentationMode } from "../lib/deployment";
 interface Props {
   content: Content;
   title?: string;
@@ -13,7 +14,12 @@ interface Props {
 }
 const { content, title, description, hero = false } = Astro.props;
 const { settings, home, branches, categories } = content;
-Astro.response.headers.set("Cache-Control", "no-store");
+Astro.response.headers.set(
+  "Cache-Control",
+  presentationMode
+    ? "public, max-age=0, s-maxage=3600, stale-while-revalidate=86400"
+    : "no-store",
+);
 const styles = [
   "style-c950c7a6.css",
   "parallax-1ad68a7b.css",
@@ -422,7 +428,7 @@ const links = [
               </a>
             </div>
             <div class="Footer_Casa">
-              <a href="/admin">Acceso del equipo ↗</a>
+              {!presentationMode && <a href="/admin">Acceso del equipo ↗</a>}
             </div>
           </div>
         </footer>

@@ -1,7 +1,11 @@
 import { readContent } from "./db.ts";
 import { MENU_ITEMS, menuProduct } from "../data/menu.ts";
+import snapshot from "../../content/presentation.json" with { type: "json" };
+import { presentationMode } from "./deployment.ts";
+import type { Content } from "./types.ts";
 
 export function getContent() {
+  if (presentationMode) return structuredClone(snapshot) as Content;
   return readContent("published");
 }
 export function getPublicContent() {

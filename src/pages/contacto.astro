@@ -2,6 +2,7 @@
 import Layout from "../layouts/Layout.astro";
 import ContactForm from "../components/ContactForm";
 import { getPublicContent } from "../lib/content";
+import { presentationMode } from "../lib/deployment";
 const content = getPublicContent();
 const { home, settings } = content;
 ---
@@ -16,6 +17,7 @@ const { home, settings } = content;
       <ContactForm
         businessName={settings.name}
         whatsapp={settings.whatsapp}
+        demo={presentationMode}
         client:load
       />
     </div>

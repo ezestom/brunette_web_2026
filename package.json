@@ -4,11 +4,14 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=24.15.0"
+    "node": ">=24.15.0 <25"
   },
   "scripts": {
     "dev": "node scripts/dev.mjs",
     "build": "astro check && astro build",
+    "build:vercel": "node scripts/build-vercel.mjs",
+    "demo:export": "node --env-file-if-exists=.env scripts/export-presentation.mjs",
+    "demo:dev": "node scripts/dev-presentation.mjs",
     "preview": "astro preview --host 127.0.0.1 --port 4322",
     "start": "node --env-file-if-exists=.env scripts/start.mjs",
     "admin:create": "node --env-file-if-exists=.env scripts/create-admin.ts",
@@ -20,6 +23,7 @@
   "dependencies": {
     "@astrojs/node": "11.1.9",
     "@astrojs/react": "7.1.0",
+    "@astrojs/vercel": "11.0.16",
     "@tailwindcss/vite": "4.3.3",
     "astro": "7.4.1",
     "react": "19.3.1",
@@ -27,6 +31,11 @@
     "sharp": "0.35.5",
     "sileo": "^0.1.6",
     "tailwindcss": "4.3.3"
+  },
+  "overrides": {
+    "@vercel/routing-utils": {
+      "path-to-regexp": "6.3.0"
+    }
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
