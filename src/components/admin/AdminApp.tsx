@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { Toaster, sileo } from "sileo";
+import "sileo/styles.css";
 import type { Content, Product, Branch, Category } from "../../lib/types";
 import {
   ProductEditor,
@@ -8,6 +10,17 @@ import {
   CategoryEditor,
 } from "./ContentEditors";
 import { money } from "../../lib/order";
+
+interface ConfirmDialogState {
+  isOpen: boolean;
+  title: string;
+  message: string;
+  confirmLabel?: string;
+  cancelLabel?: string;
+  variant?: "danger" | "default";
+  onConfirm: () => void;
+  onCancel?: () => void;
+}
 type User = {
   id: string;
   name: string;
@@ -51,6 +64,39 @@ export default function AdminApp({
     [message, setMessage] = useState(""),
     [error, setError] = useState(""),
     [confirmPublish, setConfirmPublish] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState<ConfirmDialogState>({
+    isOpen: false,
+    title: "",
+    message: "",
+    onConfirm: () => {},
+  });
+
+  const requestConfirm = (options: {
+    title: string;
+    message: string;
+    confirmLabel?: string;
+    cancelLabel?: string;
+    variant?: "danger" | "default";
+  }): Promise<boolean> => {
+    return new Promise((resolve) => {
+      setConfirmDialog({
+        isOpen: true,
+        title: options.title,
+        message: options.message,
+        confirmLabel: options.confirmLabel || "Aceptar",
+        cancelLabel: options.cancelLabel || "Cancelar",
+        variant: options.variant || "default",
+        onConfirm: () => {
+          setConfirmDialog((prev) => ({ ...prev, isOpen: false }));
+          resolve(true);
+        },
+        onCancel: () => {
+          setConfirmDialog((prev) => ({ ...prev, isOpen: false }));
+          resolve(false);
+        },
+      });
+    });
+  };
   const [productId, setProductId] = useState(""),
     [branchId, setBranchId] = useState(""),
     [categoryId, setCategoryId] = useState(""),
@@ -123,8 +169,17 @@ export default function AdminApp({
       setMessage(
         "Borrador guardado. Para verlo en la web, publicá los cambios.",
       );
+      sileo.success({
+        title: "Borrador guardado",
+        description: "Listo para publicar cuando quieras",
+      });
     } catch (e) {
-      setError(e instanceof Error ? e.message : "No se pudo guardar.");
+      const err = e instanceof Error ? e.message : "No se pudo guardar.";
+      setError(err);
+      sileo.error({
+        title: "Error al guardar",
+        description: err,
+      });
     } finally {
       setBusy(false);
     }
@@ -142,22 +197,40 @@ export default function AdminApp({
       setPublished(result.content.revision);
       setConfirmPublish(false);
       setMessage("Cambios publicados. Ya se ven en la web.");
+      sileo.success({
+        title: "¡Cambios publicados!",
+        description: "Ya se encuentran activos en la web",
+      });
     } catch (e) {
-      setError(e instanceof Error ? e.message : "No se pudo publicar.");
+      const err = e instanceof Error ? e.message : "No se pudo publicar.";
+      setError(err);
+      sileo.error({
+        title: "Error al publicar",
+        description: err,
+      });
     } finally {
       setBusy(false);
     }
   }
   async function signOut() {
-    if (
-      dirty &&
-      !confirm("Tenés cambios sin guardar. ¿Querés salir igualmente?")
-    )
-      return;
+    if (dirty) {
+      const ok = await requestConfirm({
+        title: "¿Cerrar sesión?",
+        message: "Tenés cambios sin guardar en el borrador. ¿Querés salir igualmente?",
+        confirmLabel: "Salir sin guardar",
+        cancelLabel: "Quedarme",
+        variant: "danger",
+      });
+      if (!ok) return;
+    }
     await api("auth/logout", { method: "POST" });
     setUser(null);
     setDraft(null);
     setDirty(false);
+    sileo.info({
+      title: "Sesión cerrada",
+      description: "Hasta luego",
+    });
   }
   function patchProduct(p: Product) {
     if (draft)
@@ -371,14 +444,19 @@ export default function AdminApp({
               <p>{error}</p>
               <button
                 className="admin-text-button"
-                onClick={() => {
-                  if (
-                    !dirty ||
-                    confirm(
-                      "Se perderán los cambios sin guardar. ¿Recargar el borrador?",
-                    )
-                  )
-                    void load();
+                onClick={async () => {
+                  if (dirty) {
+                    const ok = await requestConfirm({
+                      title: "¿Recargar borrador?",
+                      message:
+                        "Se perderán los cambios que no hayas guardado en el servidor.",
+                      confirmLabel: "Recargar",
+                      cancelLabel: "Cancelar",
+                      variant: "danger",
+                    });
+                    if (!ok) return;
+                  }
+                  void load();
                 }}
               >
                 Recargar borrador
@@ -725,6 +803,7 @@ export default function AdminApp({
                     );
                   }}
                   dirty={dirty}
+                  requestConfirm={requestConfirm}
                 />
               )}
               {tab === "Usuarios" && user.role === "admin" && (
@@ -743,6 +822,46 @@ export default function AdminApp({
           )}
         </div>
       </div>
+      {confirmDialog.isOpen && (
+        <div
+          className="admin-modal-backdrop"
+          role="dialog"
+          aria-modal="true"
+          onClick={() => confirmDialog.onCancel?.()}
+        >
+          <div
+            className="admin-modal-card"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="admin-modal-icon">
+              {confirmDialog.variant === "danger" ? "⚠" : "✳"}
+            </div>
+            <h3 className="admin-modal-title">{confirmDialog.title}</h3>
+            <p className="admin-modal-message">{confirmDialog.message}</p>
+            <div className="admin-modal-actions">
+              <button
+                type="button"
+                className="admin-modal-btn admin-modal-btn-cancel"
+                onClick={() => confirmDialog.onCancel?.()}
+              >
+                {confirmDialog.cancelLabel || "Cancelar"}
+              </button>
+              <button
+                type="button"
+                className={`admin-modal-btn ${
+                  confirmDialog.variant === "danger"
+                    ? "admin-modal-btn-danger"
+                    : "admin-modal-btn-confirm"
+                }`}
+                onClick={() => confirmDialog.onConfirm()}
+              >
+                {confirmDialog.confirmLabel || "Aceptar"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      <Toaster position="top-right" theme="light" />
     </div>
   );
 }
@@ -838,6 +957,7 @@ function Login({
           </small>
         </form>
       </div>
+      <Toaster position="top-right" theme="light" />
     </div>
   );
 }
@@ -883,11 +1003,19 @@ function HistoryPanel({
   draft,
   onRestore,
   dirty,
+  requestConfirm,
 }: {
   api: API;
   draft: Content;
   onRestore: (c: Content) => void;
   dirty: boolean;
+  requestConfirm: (opts: {
+    title: string;
+    message: string;
+    confirmLabel?: string;
+    cancelLabel?: string;
+    variant?: "danger" | "default";
+  }) => Promise<boolean>;
 }) {
   const [versions, setVersions] = useState<
       { id: string; created: string; author: string }[]
@@ -905,22 +1033,33 @@ function HistoryPanel({
       .catch((e) => setError(e.message));
   }, []);
   async function restore(id: string) {
-    if (
-      !confirm(
-        dirty
-          ? "Se reemplazarán los cambios sin guardar por esta versión. ¿Continuar?"
-          : "Se recuperará esta versión como borrador. La web no cambiará hasta que publiques. ¿Continuar?",
-      )
-    )
-      return;
+    const ok = await requestConfirm({
+      title: "¿Recuperar versión histórica?",
+      message: dirty
+        ? "Se reemplazarán los cambios sin guardar por esta versión. ¿Continuar?"
+        : "Se recuperará esta versión como borrador. La web no cambiará hasta que publiques. ¿Continuar?",
+      confirmLabel: "Recuperar",
+      cancelLabel: "Cancelar",
+      variant: dirty ? "danger" : "default",
+    });
+    if (!ok) return;
     try {
       const result = await api("admin/restore", {
         method: "POST",
         body: JSON.stringify({ id, expectedRevision: draft.revision }),
       });
       onRestore(result.draft);
+      sileo.success({
+        title: "Versión recuperada",
+        description: "Borrador actualizado con la versión elegida",
+      });
     } catch (e) {
-      setError(e instanceof Error ? e.message : "No se pudo recuperar.");
+      const err = e instanceof Error ? e.message : "No se pudo recuperar.";
+      setError(err);
+      sileo.error({
+        title: "Error al recuperar versión",
+        description: err,
+      });
     }
   }
   return (
