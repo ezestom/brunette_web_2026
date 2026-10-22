@@ -1,0 +1,526 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getPublicContent } from "../lib/content";
+import {
+  MENU_SECTIONS,
+  MENU_ITEMS as DEMO_MENU_ITEMS,
+  menuProductHref,
+} from "../data/menu";
+
+const content = getPublicContent();
+const MENU_ITEMS = content.home.previewMode ? DEMO_MENU_ITEMS : [];
+const initialSection = Astro.url.searchParams.get("seccion") || "all";
+const initialQuery =
+  Astro.url.searchParams.get("q")?.trim().toLowerCase() || "";
+
+const initialActiveSection = MENU_SECTIONS.find((s) => s.id === initialSection);
+---
+
+<Layout
+  content={content}
+  title={
+    initialActiveSection
+      ? `${initialActiveSection.name} · Carta`
+      : "La Carta del Mostrador"
+  }
+  description="Carta completa de Brunette: Bebidas calientes y frías, tortas, dulces y salados elaborados artesanalmente."
+>
+  <section class="Section Collection_Page_Section SectionPadded carta-page">
+    <div class="Collection_Top Parallax_Wrapper">
+      <h1 class="SectionTitle" id="carta-hero-title" style="color:var(--pink)">
+        {initialActiveSection
+          ? initialActiveSection.name.toUpperCase()
+          : "LA CARTA"}
+      </h1>
+      <div>
+        <p id="carta-hero-desc">
+          {initialActiveSection
+            ? initialActiveSection.subtitle +
+              (initialActiveSection.badge
+                ? ` (${initialActiveSection.badge})`
+                : "")
+            : "Mostrador de antojos. Productos elaborados artesanalmente con materia de primera calidad."}
+        </p>
+      </div>
+    </div>
+
+    {content.home.previewMode && (
+      <p class="sample-note">
+        Carta de demostración. Fotos y precios ilustrativos; el contenido real
+        se cargará con el cliente.
+      </p>
+    )}
+
+    <!-- Filtros instantáneos por sección -->
+    <nav
+      class="reference-filters"
+      id="carta-filter-nav"
+      aria-label="Filtrar por sección de la carta"
+    >
+      <button
+        type="button"
+        class="carta-filter-btn"
+        data-section="all"
+        aria-current={initialSection === "all" ? "page" : undefined}
+      >
+        Todas
+      </button>
+      {MENU_SECTIONS.map((sec) => (
+        <button
+          type="button"
+          class="carta-filter-btn"
+          data-section={sec.id}
+          aria-current={sec.id === initialSection ? "page" : undefined}
+        >
+          {sec.name}
+        </button>
+      ))}
+    </nav>
+
+    <!-- Buscador en tiempo real -->
+    <form
+      class="reference-catalog-search"
+      id="carta-search-form"
+      role="search"
+      onsubmit="return false;"
+    >
+      <label for="catalog-query" class="sr-only">
+        Buscar en la carta
+      </label>
+      <input
+        id="catalog-query"
+        name="q"
+        type="search"
+        value={initialQuery}
+        placeholder="¿Qué se te antoja?"
+        autocomplete="off"
+      />
+      <button
+        type="button"
+        id="catalog-clear-btn"
+        aria-label="Limpiar búsqueda"
+        style={initialQuery ? "" : "display: none;"}
+      >
+        ✕
+      </button>
+    </form>
+
+    <div class="carta-meta-bar">
+      <p class="reference-result" id="carta-result-count" aria-live="polite">
+        {MENU_ITEMS.length} opciones en la carta
+      </p>
+
+      <div class="carta-view-controls">
+        <button
+          type="button"
+          class="carta-view-btn active"
+          data-view="grid"
+          id="btn-view-grid"
+          aria-label="Ver con fotos"
+        >
+          <span>Con fotos</span>
+        </button>
+        <button
+          type="button"
+          class="carta-view-btn"
+          data-view="list"
+          id="btn-view-list"
+          aria-label="Ver formato mostrador"
+        >
+          <span>Formato mostrador</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- VISTA GRILLA CON FOTOS (Instantánea, sin lag de GSAP masivo) -->
+    <div class="Collection_Bottom" id="carta-grid-container">
+      <div
+        class="Collection_Product_List carta-product-grid"
+        id="carta-cards-wrapper"
+      >
+        {MENU_ITEMS.map((item) => {
+          const sec = MENU_SECTIONS.find((s) => s.id === item.section);
+          const isInitiallyHidden =
+            (initialSection !== "all" && item.section !== initialSection) ||
+            (initialQuery &&
+              !item.name.toLowerCase().includes(initialQuery) &&
+              !item.description.toLowerCase().includes(initialQuery));
+          return (
+            <div
+              class="Collection_Product carta-card-item"
+              data-item-id={item.id}
+              data-section={item.section}
+              data-name={item.name.toLowerCase()}
+              data-desc={item.description.toLowerCase()}
+              style={isInitiallyHidden ? "display: none;" : undefined}
+            >
+              <div class="Product_Item">
+                <a
+                  href={menuProductHref(item)}
+                  class="Product_Item_Image Fluid"
+                  aria-label={`Ver ${item.name}`}
+                >
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    width="480"
+                    height="600"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  {item.badge && (
+                    <div class="Product_Item_Ingredient carta-new-badge">
+                      <span>{item.badge}</span>
+                    </div>
+                  )}
+                  {sec?.badge && item.section === "tortas" && (
+                    <div class="Product_Item_Ingredient carta-avail-badge">
+                      <span>Disponibilidad</span>
+                    </div>
+                  )}
+                </a>
+
+                <div>
+                  <h3 class="Product_Item_Title">
+                    <a href={menuProductHref(item)}>{item.name}</a>
+                  </h3>
+                  <span class="Format">
+                    {sec?.number}. {sec?.name}
+                  </span>
+                </div>
+
+                <p class="carta-item-desc">{item.description}</p>
+
+                <div class="Product_Item_Content">
+                  <div class="Infos">
+                    <span class="Price">{item.price}</span>
+                  </div>
+                </div>
+
+                <div class="Product_Item_Submit_Container">
+                  <a
+                    class="Product_Item_Submit Form_Button"
+                    href={menuProductHref(item)}
+                    style="text-align: center; display: block; text-decoration: none;"
+                  >
+                    <span>Ver producto →</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div class="empty-state" id="carta-empty-state" style="display: none;">
+        <h2>No encontramos ese antojo en la carta.</h2>
+        <p>Probá con otro nombre o elegí otra sección.</p>
+        <button type="button" class="pill primary" id="carta-reset-btn">
+          Ver toda la carta
+        </button>
+      </div>
+    </div>
+
+    <!-- VISTA CARTA CLÁSICA DE MOSTRADOR -->
+    <div
+      class="carta-menu-board"
+      id="carta-list-container"
+      style="display: none;"
+    >
+      <div class="carta-board-inner">
+        <div class="carta-board-header">
+          <span class="carta-board-badge">MOSTRADOR DE ANTOJOS</span>
+          <h2 class="carta-board-title">Brunette</h2>
+        </div>
+
+        {MENU_SECTIONS.map((sec) => {
+          const items = MENU_ITEMS.filter((i) => i.section === sec.id);
+          return (
+            <section class="carta-board-section" data-board-section={sec.id}>
+              <div class="carta-board-sec-head">
+                <span class="carta-board-sec-num">{sec.number}.</span>
+                <h3 class="carta-board-sec-title">{sec.name.toUpperCase()}</h3>
+                {sec.badge && (
+                  <span class="carta-board-sec-note">({sec.badge})</span>
+                )}
+              </div>
+
+              <ul class="carta-board-items">
+                {items.map((item) => (
+                  <li
+                    class="carta-board-row"
+                    data-board-item={item.id}
+                    data-section={item.section}
+                    data-name={item.name.toLowerCase()}
+                    data-desc={item.description.toLowerCase()}
+                  >
+                    <div class="carta-row-left">
+                      <a class="carta-row-name" href={menuProductHref(item)}>
+                        {item.name}
+                      </a>
+                      {item.badge && (
+                        <span class="carta-badge-inline">{item.badge}</span>
+                      )}
+                      <p class="carta-row-desc">{item.description}</p>
+                    </div>
+                    <span class="carta-row-leader" aria-hidden="true"></span>
+                    <a
+                      href={menuProductHref(item)}
+                      class="carta-row-price-btn"
+                      aria-label={`Ver ${item.name}, ${item.price}`}
+                    >
+                      <span class="carta-row-price">{item.price}</span>
+                      <span class="carta-row-action">Ver →</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          );
+        })}
+
+        <div class="carta-board-footer">
+          <p class="carta-board-seal">
+            TODOS NUESTROS PRODUCTOS SON ELABORADOS ARTESANALMENTE CON MATERIA
+            DE PRIMERA CALIDAD
+          </p>
+          <span class="carta-board-tagline">MOSTRADOR DE ANTOJOS</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enlace sugerido a catálogo para encargar eventos -->
+  <section class="Section Other_Collection_Section SectionPadded Parallax_Wrapper">
+    <h2 class="SectionTitle Cool_Text_Anim Lines">¿Buscás para un evento?</h2>
+    <div class="Other_Collections_Container">
+      {content.categories.map((c, i) => (
+        <a
+          href={"/catalogo?categoria=" + c.id}
+          class="Other_Collection"
+          style={`background-color:${i % 2 ? "var(--pink)" : "var(--dark)"}`}
+        >
+          <div class="Other_Collection_Image Rounded Fluid">
+            <img
+              src={c.image}
+              alt=""
+              width="480"
+              height="600"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <h3>Ver {c.name} en catálogo</h3>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { MENU_SECTIONS } from "../data/menu";
+
+  let currentSection = "all";
+  let currentQuery = "";
+
+  const sectionMeta: Record<string, { title: string; desc: string }> = {
+    all: {
+      title: "LA CARTA",
+      desc: "Mostrador de antojos. Productos elaborados artesanalmente con materia de primera calidad.",
+    },
+  };
+
+  MENU_SECTIONS.forEach((sec) => {
+    sectionMeta[sec.id] = {
+      title: sec.name.toUpperCase(),
+      desc: sec.subtitle + (sec.badge ? ` (${sec.badge})` : ""),
+    };
+  });
+
+  const filterButtons =
+    document.querySelectorAll<HTMLButtonElement>(".carta-filter-btn");
+  const searchInput = document.getElementById(
+    "catalog-query",
+  ) as HTMLInputElement | null;
+  const clearBtn = document.getElementById("catalog-clear-btn");
+  const resultCount = document.getElementById("carta-result-count");
+  const heroTitle = document.getElementById("carta-hero-title");
+  const heroDesc = document.getElementById("carta-hero-desc");
+  const emptyState = document.getElementById("carta-empty-state");
+  const resetBtn = document.getElementById("carta-reset-btn");
+
+  const gridCards = document.querySelectorAll<HTMLElement>(".carta-card-item");
+  const boardSections = document.querySelectorAll<HTMLElement>(
+    ".carta-board-section",
+  );
+
+  function applyFilters(updateUrl = true) {
+    let visibleCount = 0;
+    const q = currentQuery.toLowerCase().trim();
+
+    // 1. Filter Grid Cards
+    gridCards.forEach((card) => {
+      const sec = card.dataset.section || "";
+      const name = card.dataset.name || "";
+      const desc = card.dataset.desc || "";
+
+      const matchSec = currentSection === "all" || sec === currentSection;
+      const matchQ = !q || name.includes(q) || desc.includes(q);
+
+      if (matchSec && matchQ) {
+        card.style.display = "";
+        visibleCount++;
+      } else {
+        card.style.display = "none";
+      }
+    });
+
+    // 2. Filter Board Sections & Rows
+    boardSections.forEach((secEl) => {
+      const secId = secEl.dataset.boardSection || "";
+      const matchSec = currentSection === "all" || secId === currentSection;
+
+      if (!matchSec) {
+        secEl.style.display = "none";
+        return;
+      }
+
+      let secVisibleRows = 0;
+      const rows = secEl.querySelectorAll<HTMLElement>(".carta-board-row");
+      rows.forEach((row) => {
+        const name = row.dataset.name || "";
+        const desc = row.dataset.desc || "";
+        const matchQ = !q || name.includes(q) || desc.includes(q);
+
+        if (matchQ) {
+          row.style.display = "";
+          secVisibleRows++;
+        } else {
+          row.style.display = "none";
+        }
+      });
+
+      secEl.style.display = secVisibleRows > 0 ? "" : "none";
+    });
+
+    // 3. Update Result Count & Empty State
+    if (resultCount) {
+      const queryNote = q ? ` · “${q}”` : "";
+      resultCount.textContent = `${visibleCount} opciones en la carta${queryNote}`;
+    }
+
+    if (emptyState) {
+      emptyState.style.display = visibleCount === 0 ? "block" : "none";
+    }
+
+    // 4. Update Header Title & Desc
+    const meta = sectionMeta[currentSection] || sectionMeta.all;
+    if (heroTitle) heroTitle.textContent = meta.title;
+    if (heroDesc) heroDesc.textContent = meta.desc;
+
+    // 5. Update Buttons
+    filterButtons.forEach((btn) => {
+      const sec = btn.dataset.section;
+      if (sec === currentSection) {
+        btn.setAttribute("aria-current", "page");
+      } else {
+        btn.removeAttribute("aria-current");
+      }
+    });
+
+    // 6. Clear Button Visibility
+    if (clearBtn) {
+      clearBtn.style.display = q ? "inline-flex" : "none";
+    }
+
+    // 7. Update URL without page reload
+    if (updateUrl) {
+      const url = new URL(window.location.href);
+      if (currentSection === "all") {
+        url.searchParams.delete("seccion");
+      } else {
+        url.searchParams.set("seccion", currentSection);
+      }
+      if (q) {
+        url.searchParams.set("q", q);
+      } else {
+        url.searchParams.delete("q");
+      }
+      window.history.replaceState({}, "", url.pathname + url.search);
+    }
+  }
+
+  // Event Listeners for Filters
+  filterButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const sec = btn.dataset.section || "all";
+      if (currentSection === sec) return;
+      currentSection = sec;
+      applyFilters(true);
+    });
+  });
+
+  // Search input live typing
+  let searchTimeout: any;
+  searchInput?.addEventListener("input", (e) => {
+    currentQuery = (e.target as HTMLInputElement).value;
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(() => {
+      applyFilters(true);
+    }, 40);
+  });
+
+  clearBtn?.addEventListener("click", () => {
+    if (searchInput) {
+      searchInput.value = "";
+      currentQuery = "";
+      searchInput.focus();
+    }
+    applyFilters(true);
+  });
+
+  resetBtn?.addEventListener("click", () => {
+    currentSection = "all";
+    currentQuery = "";
+    if (searchInput) searchInput.value = "";
+    applyFilters(true);
+  });
+
+  // Sync initial state from URL on page load
+  const initialUrl = new URL(window.location.href);
+  const initialSecParam = initialUrl.searchParams.get("seccion");
+  const initialQParam = initialUrl.searchParams.get("q");
+
+  if (initialSecParam && sectionMeta[initialSecParam]) {
+    currentSection = initialSecParam;
+  }
+  if (initialQParam) {
+    currentQuery = initialQParam;
+    if (searchInput) searchInput.value = initialQParam;
+  }
+
+  applyFilters(false);
+
+  // Toggle View: Grid vs List
+  const gridBtn = document.getElementById("btn-view-grid");
+  const listBtn = document.getElementById("btn-view-list");
+  const gridContainer = document.getElementById("carta-grid-container");
+  const listContainer = document.getElementById("carta-list-container");
+
+  function setView(view: "grid" | "list") {
+    if (view === "grid") {
+      gridContainer?.removeAttribute("style");
+      if (listContainer) listContainer.style.display = "none";
+      gridBtn?.classList.add("active");
+      listBtn?.classList.remove("active");
+    } else {
+      if (gridContainer) gridContainer.style.display = "none";
+      listContainer?.removeAttribute("style");
+      listBtn?.classList.add("active");
+      gridBtn?.classList.remove("active");
+    }
+  }
+
+  gridBtn?.addEventListener("click", () => setView("grid"));
+  listBtn?.addEventListener("click", () => setView("list"));
+</script>

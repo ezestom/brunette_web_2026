@@ -3,6 +3,7 @@ import type { Content, OrderDetails } from "../lib/types";
 import { useCart, setQuantity } from "../lib/cart-store";
 import {
   quoteCart,
+  orderProducts,
   money,
   dateInZone,
   validateOrder,
@@ -28,7 +29,7 @@ export default function CartDrawer({ content }: { content: Content }) {
     address: "",
     notes: "",
   });
-  const quote = quoteCart(lines, current.products),
+  const quote = quoteCart(lines, orderProducts(current)),
     branch = current.branches.find((b) => b.id === details.branchId);
   const count = lines.reduce((sum, i) => sum + i.quantity, 0);
   const currency = current.settings.currency;
@@ -95,8 +96,8 @@ export default function CartDrawer({ content }: { content: Content }) {
           "No pudimos comprobar la disponibilidad. Intentá otra vez.",
         );
       const fresh: Content = await response.json();
-      const previous = quoteCart(lines, current.products),
-        updated = quoteCart(lines, fresh.products);
+      const previous = quoteCart(lines, orderProducts(current)),
+        updated = quoteCart(lines, orderProducts(fresh));
       setCurrent(fresh);
       const validation = validateOrder(details, fresh, lines);
       if (validation.errors.length) {

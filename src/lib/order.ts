@@ -16,6 +16,9 @@ export function money(value: number | null, currency = "ARS") {
         maximumFractionDigits: 2,
       }).format(value / 100);
 }
+export function orderProducts(content: Content): Product[] {
+  return [...content.products, ...(content.menuProducts || [])];
+}
 export function quoteCart(lines: CartLine[], products: Product[]) {
   const missing: string[] = [],
     blocked: string[] = [];
@@ -90,7 +93,7 @@ export function validateOrder(
   now = new Date(),
 ) {
   const errors: string[] = [];
-  const quote = quoteCart(lines, content.products);
+  const quote = quoteCart(lines, orderProducts(content));
   const branch = content.branches.find(
     (b) => b.id === details.branchId && b.active,
   );
@@ -177,7 +180,7 @@ export function whatsappLink(
   );
   if (!/^\d{8,15}$/.test(number))
     throw new Error("Todavía no se configuró el WhatsApp de esta sucursal.");
-  const quote = quoteCart(lines, content.products);
+  const quote = quoteCart(lines, orderProducts(content));
   const fee =
     details.method === "delivery"
       ? (branch?.deliveryFee ?? content.settings.deliveryFee)

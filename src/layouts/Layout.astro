@@ -51,11 +51,18 @@ const footerWordmark = isBrunette
       { text: "e", italic: false },
     ]
   : [{ text: settings.name, italic: false }];
+const orderedCategories = [
+  categories.find((c) => c.id === "tortas"),
+  categories.find((c) => c.id === "cookies"),
+  ...categories.filter((c) => c.id !== "tortas" && c.id !== "cookies"),
+].filter(Boolean) as typeof categories;
+
 const links = [
-  ...categories.map((c) => ({
+  ...orderedCategories.map((c) => ({
     href: "/catalogo?categoria=" + c.id,
     label: c.name,
   })),
+  { href: "/carta", label: "Carta" },
   { href: "/nosotros", label: "Nosotros" },
   { href: "/sucursales", label: "Encontranos" },
   { href: "/contacto", label: "Contacto" },
@@ -102,6 +109,7 @@ const links = [
     </script>
     <script is:inline src="/assets/gsap.min-fce7bc2a.js"></script>
     <script is:inline src="/assets/ScrollTrigger.min-02dea619.js"></script>
+    <script is:inline src="/assets/lenis.min-2302d1bd.js"></script>
   </head>
   <body class:list={["reference-site", hero && "has-hero"]}>
     <ReferenceCurtains />
@@ -323,13 +331,18 @@ const links = [
             </div>
             <div class="Footer_Menu">
               <ul>
-                {categories.map((c) => (
+                {orderedCategories.map((c) => (
                   <li>
                     <a class="Grow_Anim" href={"/catalogo?categoria=" + c.id}>
                       {c.name}
                     </a>
                   </li>
                 ))}
+                <li>
+                  <a class="Grow_Anim" href="/carta">
+                    Carta
+                  </a>
+                </li>
               </ul>
             </div>
             <div class="Footer_Menu">

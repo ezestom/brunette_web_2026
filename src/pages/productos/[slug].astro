@@ -3,9 +3,20 @@ import Layout from "../../layouts/Layout.astro";
 import ProductDetail from "../../components/ProductDetail";
 import ReferenceProduct from "../../components/reference/ReferenceProduct.astro";
 import { getPublicContent } from "../../lib/content";
+import { MENU_SECTIONS } from "../../data/menu";
 const content = getPublicContent();
-const product = content.products.find((p) => p.slug === Astro.params.slug);
+const menuProduct = content.menuProducts?.find(
+  (p) => p.slug === Astro.params.slug,
+);
+const product =
+  content.products.find((p) => p.slug === Astro.params.slug) || menuProduct;
 if (!product) return Astro.redirect("/catalogo");
+const menuSection =
+  menuProduct &&
+  MENU_SECTIONS.find(
+    (section) => `carta-${section.id}` === menuProduct.category,
+  );
+const related = menuProduct ? content.menuProducts || [] : content.products;
 ---
 
 <Layout
@@ -14,12 +25,20 @@ if (!product) return Astro.redirect("/catalogo");
   description={product.description}
 >
   <section class="Section Product_Page_Section SectionPadded">
-    <a class="back-link Grow_Anim" href="/catalogo">
-      ← Volver a los antojos
+    <a
+      class="back-link Grow_Anim"
+      href={menuSection ? `/carta?seccion=${menuSection.id}` : "/catalogo"}
+    >
+      {menuSection ? "← Volver a la carta" : "← Volver a los antojos"}
     </a>
     <ProductDetail
       product={product}
       currency={content.settings.currency}
+      formatLabel={
+        menuSection
+          ? `${menuSection.name} · ${product.variants[0].name}`
+          : undefined
+      }
       client:load
     />
   </section>
@@ -28,7 +47,7 @@ if (!product) return Astro.redirect("/catalogo");
       Un antojo más.
     </h2>
     <div class="Collection_Product_List">
-      {content.products
+      {related
         .filter((p) => p.id !== product.id && p.category === product.category)
         .slice(0, 3)
         .map((p) => (

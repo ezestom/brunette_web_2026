@@ -5,6 +5,6 @@ dist/
 .env.*
 !.env.example
 test-results/
-data/
+/data/
 backups/
 

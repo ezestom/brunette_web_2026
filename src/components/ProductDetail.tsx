@@ -5,9 +5,11 @@ import { addToCart } from "../lib/cart-store";
 export default function ProductDetail({
   product,
   currency,
+  formatLabel,
 }: {
   product: Product;
   currency: string;
+  formatLabel?: string;
 }) {
   const [selected, setSelected] = useState(product.variants[0].id),
     [quantity, setQuantityState] = useState(1),
@@ -86,9 +88,10 @@ export default function ProductDetail({
         <div className="Wrapper">
           <h1 className="Product_Title">{product.name}</h1>
           <p className="Product_Format">
-            {product.fulfillment === "preorder"
-              ? "Hecho para tu ocasión"
-              : "Del mostrador"}
+            {formatLabel ||
+              (product.fulfillment === "preorder"
+                ? "Hecho para tu ocasión"
+                : "Del mostrador")}
           </p>
           <div className="Product_Form">
             <fieldset className="variant-options">

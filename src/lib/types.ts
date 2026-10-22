@@ -101,6 +101,8 @@ export interface Content {
   home: HomeContent;
   categories: Category[];
   products: Product[];
+  /** Public demo menu, separate from CMS catalog categories. */
+  menuProducts?: Product[];
   branches: Branch[];
 }
 export interface CartLine {

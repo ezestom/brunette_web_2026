@@ -159,4 +159,28 @@ anticipaciones, precios, cobertura y teléfonos de cada sucursal; cargar el logo
 revisar las cuentas del equipo y desactivar el modo de prueba. La web está
 preparada para hacer esos cambios desde el panel.
 
+## Carta de demostración
+
+La carta de venta usa `src/data/menu.ts` y las fotos ilustrativas de
+`src/data/menu-photos.ts`. La foto, el nombre y el botón de cada artículo abren
+`/productos/carta-<id>` con la misma ficha del catálogo. La vista de mostrador
+también abre esas fichas. Cantidad, precios, carrito y preparación de WhatsApp
+comparten la lógica del catálogo; navegar por la carta no abre WhatsApp.
+
+Estos artículos son de prueba y se incluyen solamente mientras **Modo de prueba**
+está activo. La carta estática no se edita desde el panel de productos: al preparar
+la entrega real hay que reemplazar esta fuente por el contenido confirmado del
+cliente y conectarla a la edición del panel. El catálogo existente sí conserva
+su edición habitual en el panel.
+
+Las 24 fotografías nuevas se sirven como WebP locales desde
+`public/assets/menu-demo/`. Fuentes y licencia en
+[research/MENU-PHOTO-SOURCES.md](research/MENU-PHOTO-SOURCES.md).
+`node scripts/import-menu-photos.mjs` permite volver a descargarlas;
+también acepta nombres concretos, por ejemplo `espresso water`.
+
+Verificación: `npm test`, `npm run build` y `node scripts/menu-qa.cjs` con el
+servidor iniciado. La prueba de navegador cubre ambas vistas, detalle, galería,
+cantidad, carrito, API pública y móvil. Capturas en `test-results/menu-*.png`.
+
 # brunette_web_2026

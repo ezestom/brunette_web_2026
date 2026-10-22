@@ -13,12 +13,62 @@ async function initReferenceMotion() {
   const one = (selector, root = document) => root.querySelector(selector);
   const timers = [];
   if (gsap && ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
-  // Native wheel/touch scrolling keeps input immediate and nested dialogs scrollable.
-  // ScrollTrigger already observes native scroll; no virtual-scroll interception.
+  // Use the reference's Lenis build and a single GSAP clock. Touch stays native.
+  const motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
+  let lenis;
+  const scrollTick = (time) => lenis?.raf(time * 1000);
+  const syncScrollLock = () => {
+    const locked = document.documentElement.classList.contains("has-modal");
+    if (!lenis || lenis.isStopped === locked) return;
+    locked ? lenis.stop() : lenis.start();
+  };
+  document.querySelectorAll("dialog").forEach((dialog) => {
+    dialog.setAttribute("data-lenis-prevent", "");
+  });
+  const scrollLockObserver = new MutationObserver(syncScrollLock);
+  scrollLockObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
+  function configureScroll() {
+    gsap?.ticker.remove(scrollTick);
+    lenis?.destroy();
+    lenis = null;
+    if (!motionPreference.matches && window.Lenis && gsap && ScrollTrigger) {
+      lenis = new window.Lenis({
+        lerp: 0.1,
+        smoothWheel: true,
+        syncTouch: false,
+        wheelMultiplier: 1,
+      });
+      lenis.on("scroll", ScrollTrigger.update);
+      gsap.ticker.add(scrollTick);
+      gsap.ticker.lagSmoothing(0);
+      syncScrollLock();
+    }
+  }
+  configureScroll();
+  motionPreference.addEventListener("change", configureScroll);
+  ScrollTrigger?.addEventListener("refresh", () => lenis?.resize());
+  addEventListener("pagehide", (event) => {
+    gsap?.ticker.remove(scrollTick);
+    if (!event.persisted) {
+      scrollLockObserver.disconnect();
+      lenis?.destroy();
+    }
+  });
+  addEventListener("pageshow", (event) => {
+    if (event.persisted && lenis) {
+      lenis.resize();
+      lenis.scrollTo(scrollY, { immediate: true, force: true });
+      gsap.ticker.add(scrollTick);
+      syncScrollLock();
+    }
+  });
   const tweenScroll = (target, trigger, start, end, vars, from = false) => {
     if (!target || !trigger || !gsap || reduced) return;
     const options = {
-      scrollTrigger: { trigger, start, end, scrub: 0.18 },
+      scrollTrigger: { trigger, start, end, scrub: true },
       ...vars,
     };
     from ? gsap.from(target, options) : gsap.to(target, options);
@@ -560,34 +610,35 @@ async function initReferenceMotion() {
     const measured = range.getBoundingClientRect().width;
     if (measured)
       wordmark.style.fontSize = `${(wordmark.parentElement.clientWidth / measured) * 100}px`;
+    if (innerWidth > 768 && !motionPreference.matches) {
+      const middle = wordmark.closest(".Footer_Middle");
+      const style = getComputedStyle(middle);
+      const available =
+        middle.clientHeight -
+        parseFloat(style.paddingTop) -
+        parseFloat(style.paddingBottom);
+      const height = wordmark.offsetHeight;
+      if (height > available && available > 0)
+        wordmark.style.fontSize = `${(parseFloat(wordmark.style.fontSize) * available) / height}px`;
+    }
   }
   function resizeFooter() {
     if (!footerWrapper || !footer || !space) return;
     fitFooterWordmark();
-    if (wordmark) {
-      const link = wordmark.parentElement;
-      link.style.height = "";
-      wordmark.style.transform = "";
-      // Leave all links visible below the persistent header on shorter desktops.
-      if (innerWidth > 768) {
-        const excess =
-          footer.offsetHeight -
-          (innerHeight - (header?.offsetHeight || 100) - 16);
-        if (excess > 0) {
-          const height = wordmark.offsetHeight,
-            scale = Math.max(0.65, (height - excess) / height);
-          link.style.height = `${height * scale}px`;
-          wordmark.style.transform = `scaleY(${scale})`;
-        }
-      }
-    }
+    // Desktop rows reserve space for links and fit the wordmark proportionally.
+    // Only exceptionally short windows and mobile use the natural document flow.
+    const height = footer.offsetHeight;
     const fixed =
-      footer.offsetHeight <= innerHeight - (header?.offsetHeight || 100);
-    space.style.height = fixed ? `${footer.offsetHeight}px` : "auto";
+      innerWidth > 768 &&
+      !motionPreference.matches &&
+      height <= innerHeight - (header?.offsetHeight || 80) - 16;
+    space.style.height = fixed ? `${height}px` : "auto";
     footerWrapper.classList.toggle("Fixed", fixed);
+    lenis?.resize();
   }
   resizeFooter();
   addEventListener("resize", resizeFooter);
+  motionPreference.addEventListener("change", resizeFooter);
   if (footer && window.ResizeObserver)
     new ResizeObserver(resizeFooter).observe(footer);
   const fixedAdd = one(".Product_Hero_Fixed"),
@@ -690,13 +741,26 @@ async function initReferenceMotion() {
       );
       if (target) {
         event.preventDefault();
-        scrollTo({
-          top:
-            target.getBoundingClientRect().top +
-            scrollY -
-            (header?.offsetHeight || 100),
-          behavior: reduced ? "instant" : "smooth",
-        });
+        if (lenis)
+          lenis.scrollTo(target, { offset: -(header?.offsetHeight || 100) });
+        else
+          scrollTo({
+            top:
+              target.getBoundingClientRect().top +
+              scrollY -
+              (header?.offsetHeight || 100),
+            behavior: motionPreference.matches ? "instant" : "smooth",
+          });
+        // Preserve keyboard navigation when the skip link scrolls through Lenis.
+        if (!target.hasAttribute("tabindex")) {
+          target.setAttribute("tabindex", "-1");
+          target.addEventListener(
+            "blur",
+            () => target.removeAttribute("tabindex"),
+            { once: true },
+          );
+        }
+        target.focus({ preventScroll: true });
       }
       return;
     }
