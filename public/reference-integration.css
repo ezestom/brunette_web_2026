@@ -1054,9 +1054,48 @@ html:root {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
-.reference-site .carta-card-item {
+/* Filtering hides cards without changing their nth-child position. Use gaps
+   instead of the inherited collection's positional margins. */
+.reference-site .carta-product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4rem 3rem;
+  margin: 2rem 0;
+}
+
+.reference-site .carta-product-grid > .carta-card-item {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
   content-visibility: auto;
   contain-intrinsic-size: 0 420px;
+}
+
+.reference-site .carta-card-item .Product_Item {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.reference-site .carta-card-item .Product_Item_Image {
+  flex-shrink: 0;
+}
+
+.reference-site .carta-card-item .Product_Item_Content {
+  margin-top: auto;
+}
+
+@media screen and (max-width: 1024px) {
+  .reference-site .carta-product-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .reference-site .carta-product-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .reference-site #catalog-clear-btn {

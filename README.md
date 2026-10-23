@@ -214,6 +214,18 @@ En Vercel, importar el repositorio en el proyecto `brunette-web-2026`, con:
 - Output Directory: dejar la configuración automática del adaptador.
 - No hace falta una URL de Render ni credenciales de la base de datos.
 
+En **Settings → Environments → Production → Branch Tracking**, Vercel sigue
+`codex/vercel-presentation`. Render conserva su configuración y su rama habitual.
+Para actualizar la demo, subir los cambios a `codex/vercel-presentation`; subirlos
+solo a `main` no actualiza este destino. Para desplegar una rama que ya existe,
+usar **Deployments → Create Deployment**, seleccionar esa rama y confirmar
+**Deploy to Production**.
+
+Un despliegue marcado **Ready** solo confirma que terminó la compilación. Si el
+dominio muestra el 404 de Vercel, comprobar también la rama y el commit en
+**Overview → Source**: la demo necesita esta configuración del adaptador de
+Vercel y el comando `build:vercel`, que no estaban en el commit `4e5f769` de `main`.
+
 La compilación incorpora el modo de presentación en el paquete del servidor;
 no depende de definir una variable adicional durante la ejecución en Vercel.
 Las fichas, filtros, carta, carrito y preparación de WhatsApp funcionan con la
