@@ -4,6 +4,7 @@ import "sileo/styles.css";
 import { Toaster } from "sileo";
 import CartDrawer from "../components/CartDrawer";
 import ReferenceCurtains from "../components/reference/ReferenceCurtains.astro";
+import ReferenceWordmark from "../components/reference/ReferenceWordmark.astro";
 import type { Content } from "../lib/types";
 import { presentationMode } from "../lib/deployment";
 interface Props {
@@ -142,24 +143,10 @@ const links = [
         aria-label={`${settings.name}, inicio`}
       >
         <div class:list={["Logo_Dark", !hero && "Shown"]}>
-          <span class="brand-title header-brand-wordmark">
-            {footerWordmark.map((part) => (
-              <span class:list={[part.italic && "brand-italic"]}>
-                {part.text}
-              </span>
-            ))}
-          </span>
-          <span class="brand-tagline">{settings.tagline}</span>
+          <ReferenceWordmark parts={footerWordmark} tagline={settings.tagline} />
         </div>
         <div class:list={["Logo_Light", hero && "Shown"]} aria-hidden="true">
-          <span class="brand-title header-brand-wordmark">
-            {footerWordmark.map((part) => (
-              <span class:list={[part.italic && "brand-italic"]}>
-                {part.text}
-              </span>
-            ))}
-          </span>
-          <span class="brand-tagline">{settings.tagline}</span>
+          <ReferenceWordmark parts={footerWordmark} tagline={settings.tagline} />
         </div>
       </a>
       <nav aria-label="Principal">
@@ -238,14 +225,7 @@ const links = [
           class="Logo brand-wordmark"
           aria-label={`${settings.name}, inicio`}
         >
-          <span class="brand-title header-brand-wordmark">
-            {footerWordmark.map((part) => (
-              <span class:list={[part.italic && "brand-italic"]}>
-                {part.text}
-              </span>
-            ))}
-          </span>
-          <span class="brand-tagline">{settings.tagline}</span>
+          <ReferenceWordmark parts={footerWordmark} tagline={settings.tagline} />
         </a>
         <button
           class="Drawer_Close"

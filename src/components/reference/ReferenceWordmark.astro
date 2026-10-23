@@ -1,0 +1,20 @@
+---
+interface Props {
+  parts: { text: string; italic: boolean }[];
+  tagline: string;
+}
+const { parts, tagline } = Astro.props;
+---
+
+<span class="nav-brand">
+  <span class="brand-title header-brand-wordmark">
+    {parts.map((part) => (
+      <span class:list={[part.italic && "brand-italic"]}>{part.text}</span>
+    ))}
+  </span>
+  <svg class="brand-tagline" viewBox="0 0 200 22" aria-hidden="true">
+    <text x="0" y="17" font-size="18" textLength="200" lengthAdjust="spacingAndGlyphs">
+      {tagline}
+    </text>
+  </svg>
+</span>

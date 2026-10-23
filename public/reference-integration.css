@@ -464,7 +464,7 @@ html.lenis body {
     transform: translateX(0);
   }
 }
-@media (max-width: 1200px) {
+@media (max-width: 1280px) {
   .reference-site .main-menu {
     display: none !important;
   }
@@ -1033,30 +1033,35 @@ html:root {
 .reference-site .site_logo.brand-wordmark .Logo_Light {
   color: var(--beige);
 }
-.reference-site .site_logo.brand-wordmark .brand-title,
-.reference-site .Menu_Drawer .Logo.brand-wordmark .brand-title {
+.reference-site .nav-brand {
+  display: inline-block;
+  position: relative;
+  padding-bottom: 0.36em;
+  font-size: 4rem;
+  white-space: nowrap;
+}
+.reference-site .nav-brand .brand-title {
   font-family: "Brunette Serif", "Times New Roman", serif;
-  font-size: 2.5rem;
+  font-size: inherit;
   letter-spacing: -0.025em;
   line-height: 0.95;
   font-weight: 400;
   display: block;
   text-transform: none;
 }
-.reference-site .site_logo.brand-wordmark .brand-title {
-  font-size: 3.25rem;
-}
-.reference-site .site_logo.brand-wordmark .brand-title .brand-italic,
-.reference-site .Menu_Drawer .Logo.brand-wordmark .brand-title .brand-italic {
+.reference-site .nav-brand .brand-italic {
   font-style: italic;
 }
-.reference-site .site_logo.brand-wordmark .brand-tagline {
+.reference-site .nav-brand .brand-tagline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  fill: currentColor;
   font-family: var(--title-font);
-  font-size: 0.8rem;
   font-weight: 400;
-  letter-spacing: 0.04em;
   display: block;
-  margin-top: 5px;
   opacity: 0.78;
   text-transform: none;
   line-height: 1;
@@ -1069,27 +1074,13 @@ html:root {
   text-decoration: none;
   width: auto;
 }
-.reference-site .Menu_Drawer .Logo.brand-wordmark .brand-tagline {
-  font-family: var(--title-font);
-  font-size: 0.6rem;
-  font-weight: 400;
-  letter-spacing: 0.04em;
-  margin-top: 4px;
-  opacity: 0.75;
-  text-transform: none;
-  line-height: 1;
-}
 @media (max-width: 768px) {
   .reference-site .site_logo.brand-wordmark {
     min-width: 180px;
     height: 48px;
   }
-  .reference-site .site_logo.brand-wordmark .brand-title {
-    font-size: 2.6rem;
-  }
-  .reference-site .site_logo.brand-wordmark .brand-tagline {
-    font-size: 0.7rem;
-    margin-top: 3px;
+  .reference-site .nav-brand {
+    font-size: 3.5rem;
   }
 }
 .reference-site .Footer_Infos .Footer_Logo_Badge {
