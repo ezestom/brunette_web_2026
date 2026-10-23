@@ -138,6 +138,7 @@ export default function CartDrawer({ content }: { content: Content }) {
       <dialog
         ref={dialog}
         className="cart-dialog"
+        data-lenis-prevent=""
         aria-labelledby="cart-title"
         onCancel={(e) => {
           e.preventDefault();
@@ -167,15 +168,15 @@ export default function CartDrawer({ content }: { content: Content }) {
             <div className="empty-state">
               <span className="empty-star">✳</span>
               <h3>Todavía hay lugar para un antojo.</h3>
-              <p>Sumá tus favoritos del catálogo y coordinamos por WhatsApp.</p>
+              <p>Elegí tus favoritos de la carta y coordinamos por WhatsApp.</p>
               <button
                 className="pill primary"
                 onClick={() => {
                   dialog.current?.close();
-                  location.href = "/catalogo";
+                  location.href = "/carta";
                 }}
               >
-                Explorar el catálogo
+                Explorar la carta
                 <ArrowIcon />
               </button>
             </div>

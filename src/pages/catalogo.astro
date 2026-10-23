@@ -4,6 +4,13 @@ import ReferenceProduct from "../components/reference/ReferenceProduct.astro";
 import { getPublicContent } from "../lib/content";
 const content = getPublicContent();
 const chosen = Astro.url.searchParams.get("categoria") || "all";
+if (chosen === "all") {
+  const query = Astro.url.searchParams.get("q");
+  return Astro.redirect(
+    `/carta${query ? `?q=${encodeURIComponent(query)}` : ""}`,
+    302,
+  );
+}
 const selected = content.categories.find((c) => c.id === chosen);
 const query = Astro.url.searchParams.get("q")?.trim() || "";
 const products = content.products.filter(

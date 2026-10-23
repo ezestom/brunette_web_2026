@@ -287,11 +287,7 @@ const links = [
     </main>
     <section class="Section Newsletter_Section SectionPadded Parallax_Wrapper">
       <div class="Newsletter_Container">
-        <h2 class="Cool_Text_Anim Lines">
-          Siempre hay lugar
-          <br />
-          para un antojo
-        </h2>
+        <h2 class="Cool_Text_Anim Lines">Siempre hay lugar para un antojo</h2>
         <p>{home.showAnnouncement ? home.announcement : settings.tagline}</p>
         <a
           class="Form_Button WhatsApp_CTA Relative_To_Mouse"
@@ -446,7 +442,12 @@ const links = [
         </footer>
       </div>
     </div>
-    <Toaster client:load position="top-center" theme="light" />
+    <Toaster
+      client:load
+      position="top-center"
+      theme="light"
+      options={{ fill: "var(--dark)" }}
+    />
     <canvas id="js-front-canvas" aria-hidden="true"></canvas>
     <script>
       import "../scripts/reference-motion";

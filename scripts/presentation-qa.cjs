@@ -59,29 +59,33 @@ const fs = require("node:fs");
     await page.keyboard.press("Escape");
     await page.waitForFunction(() => !document.querySelector("dialog[open]"));
     await page.goto(base + "/contacto", { waitUntil: "networkidle" });
+    await page.route("https://formsubmit.co/ajax/**", (route) =>
+      route.fulfill({
+        status: 200,
+        headers: { "Access-Control-Allow-Origin": "*" },
+        json: { success: true },
+      }),
+    );
     await page.locator('[name="firstName"]').fill("Demo");
+    await page.locator('[name="email"]').fill("demo@example.test");
     await page
       .locator('[name="message"]')
       .fill("Consulta de prueba para presentación");
     await page
-      .getByRole("button", { name: "Preparar consulta de prueba", exact: true })
+      .getByRole("button", { name: "Enviar mensaje", exact: true })
       .click();
-    const message = page.locator('.contact-ready a[href*="wa.me"]');
-    await message.waitFor();
-    assert.ok(
-      decodeURIComponent(await message.getAttribute("href")).includes(
-        "DE PRUEBA",
-      ),
-    );
+    await page.locator('[data-sileo-toast][data-state="success"]').waitFor();
+    assert.equal(await page.locator(".contact-ready").count(), 0);
+    await page.waitForURL(base + "/");
     await page.screenshot({ path: "test-results/presentation-contact.png" });
-    assert.deepEqual(
-      external,
-      [],
-      "Demo must not contact Render, email services or any external backend",
+    assert.ok(
+      external.length > 0 &&
+        external.every((url) => url.startsWith("https://formsubmit.co/ajax/")),
+      "Only the mocked email provider may be requested",
     );
     assert.deepEqual(errors, []);
     console.log(
-      "Independent presentation verified: public pages, local catalog API, cart, read-only admin and demo contact. No external backend requests.",
+      "Independent presentation verified: public pages, local catalog API, cart, read-only admin and email contact (mocked). No Render requests.",
     );
   } finally {
     await browser.close();

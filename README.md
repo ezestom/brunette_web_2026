@@ -161,6 +161,20 @@ preparada para hacer esos cambios desde el panel.
 
 ## Carta de demostración
 
+`/carta` reúne las cookies y tortas publicadas del catálogo y, en modo de prueba,
+los artículos de la carta de demostración. Cada producto conserva su ficha y su
+identidad en el carrito. La vista general y los filtros priorizan Cookies,
+Tortas, Dulces y Salados antes de las bebidas. `/catalogo` sin categoría redirige
+a esta carta y conserva la búsqueda; el carrito vacío también lleva a ella.
+Las categorías específicas del catálogo siguen disponibles.
+
+Para comprobar rendimiento en una compilación real: `npm run build:vercel` y
+`npm run test:carta-performance`. La prueba usa Chrome aislado y un servidor
+temporal del artefacto compilado; comprueba filtros, búsqueda, navegación,
+carrito y partículas. El canvas se limita a la ventana y solo dibuja mientras
+hay partículas; al quedar inactivo o esconder la pestaña detiene su bucle.
+Los enlaces de la carta navegan sin la espera decorativa de 800 ms.
+
 La carta de venta usa `src/data/menu.ts` y las fotos ilustrativas de
 `src/data/menu-photos.ts`. La foto, el nombre y el botón de cada artículo abren
 `/productos/carta-<id>` con la misma ficha del catálogo. La vista de mostrador
@@ -229,14 +243,23 @@ Vercel y el comando `build:vercel`, que no estaban en el commit `4e5f769` de `ma
 La compilación incorpora el modo de presentación en el paquete del servidor;
 no depende de definir una variable adicional durante la ejecución en Vercel.
 Las fichas, filtros, carta, carrito y preparación de WhatsApp funcionan con la
-API de catálogo local de la demo. Contacto prepara una consulta de prueba y no
-envía correos reales. El panel y sus APIs están desactivados en este destino.
+API de catálogo local de la demo. Contacto envía por FormSubmit al correo
+configurado, también en Vercel; solo confirma una respuesta explícita de éxito,
+limpia el formulario y vuelve al inicio. Si falla, conserva los datos.
+El primer envío puede pedir activar el destinatario desde el correo de
+FormSubmit. Se puede configurar `PUBLIC_FORMSUBMIT_FORM_ID` con el identificador
+público del formulario activado enviado por FormSubmit (solo el código de
+`https://formsubmit.co/código`, nunca el enlace `/confirm/`). Requiere reiniciar
+el servidor local o reconstruir el despliegue. Mientras esté pendiente se muestra una advertencia de activación;
+no se confirma la consulta como enviada ni se borran sus campos.
+El panel y sus APIs están desactivados en este destino.
 Las páginas llevan `noindex` para no indexar la presentación como sitio real.
 
 Para probar localmente: `npm run demo:dev`. El servidor toma el siguiente puerto
 libre a partir de 4321. `node scripts/presentation-qa.cjs` usa 4323 por defecto;
 `QA_BASE_URL` permite elegir otro puerto. La prueba comprueba que no haya
-solicitudes a Render ni a servicios externos de correo.
+solicitudes a Render. El proveedor de correo se simula en las pruebas para no
+enviar mensajes reales.
 
 `npm run build:vercel` verifica que el paquete desplegable no contenga bases de
 datos, archivos de acceso ni `.env`. Después se puede comprobar la función ya

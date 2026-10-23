@@ -18,6 +18,7 @@
     "backup": "node --env-file-if-exists=.env scripts/backup.ts",
     "check": "astro check",
     "test": "node --test tests/*.test.mjs",
+    "test:carta-performance": "node scripts/carta-performance-qa.cjs",
     "format": "prettier --write ."
   },
   "dependencies": {

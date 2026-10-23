@@ -2,9 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 import ContactForm from "../components/ContactForm";
 import { getPublicContent } from "../lib/content";
-import { presentationMode } from "../lib/deployment";
 const content = getPublicContent();
-const { home, settings } = content;
+const { home } = content;
 ---
 
 <Layout content={content} title="Contacto">
@@ -14,12 +13,7 @@ const { home, settings } = content;
       {home.contactText && (
         <p class="contact-description">{home.contactText}</p>
       )}
-      <ContactForm
-        businessName={settings.name}
-        whatsapp={settings.whatsapp}
-        demo={presentationMode}
-        client:load
-      />
+      <ContactForm client:load />
     </div>
     <div class="Contact_Form_Image_Container">
       <div class="Contact_Form_Image Fluid Parallax_Back" data-p-displace="25%">

@@ -268,7 +268,10 @@ async function initReferenceMotion() {
       ctx = canvas.getContext("2d");
     anim.setAttribute("aria-label", text);
     let width = innerWidth,
-      tween;
+      tween,
+      observer;
+    let appeared = false;
+    const newsletter = anim.closest(".Newsletter_Container");
     function split() {
       const style = getComputedStyle(anim);
       ctx.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
@@ -299,6 +302,35 @@ async function initReferenceMotion() {
       append();
       tween?.scrollTrigger?.kill();
       tween?.kill();
+      observer?.disconnect();
+      // Filtering changes the page height. Observe the shared footer in the
+      // viewport instead of keeping an obsolete absolute ScrollTrigger offset.
+      if (newsletter) {
+        if (appeared) {
+          gsap.set(items, { y: 0, rotation: 0 });
+          return;
+        }
+        tween = gsap.from(items, {
+          paused: true,
+          stagger: { amount: 0.3 },
+          ease: "expo.out",
+          duration: 1.2,
+          rotation: 12,
+          y: "101%",
+        });
+        observer = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) {
+              appeared = true;
+              tween.play();
+              observer.disconnect();
+            }
+          },
+          { threshold: 0.1 },
+        );
+        observer.observe(anim);
+        return;
+      }
       tween = reveal(items, {
         delay: 0.3,
         scrollTrigger: anim,
@@ -764,7 +796,15 @@ async function initReferenceMotion() {
       }
       return;
     }
-    if (url.href === location.href || url.hash || reduced || !pageHide || !gsap)
+    // Browsing products must not wait for the decorative 800ms page curtain.
+    if (
+      one(".carta-page") ||
+      url.href === location.href ||
+      url.hash ||
+      reduced ||
+      !pageHide ||
+      !gsap
+    )
       return;
     event.preventDefault();
     if (navigating) return;
@@ -802,16 +842,16 @@ async function initReferenceMotion() {
     if (!document.hidden) ScrollTrigger?.refresh();
   });
   ScrollTrigger?.refresh();
-  // Canvas crumbs reproduce the public 60fps, three-particle bite interaction.
+  // Draw crumbs only while particles exist, on a viewport-sized canvas.
   const canvas = one("#js-front-canvas");
   if (canvas && !reduced) {
     const ctx = canvas.getContext("2d"),
       crumbs = [];
-    let frame,
+    let frame = 0,
       last = 0;
     const resize = () => {
       canvas.width = document.documentElement.clientWidth;
-      canvas.height = Math.max(document.body.scrollHeight, innerHeight);
+      canvas.height = innerHeight;
     };
     resize();
     addEventListener("resize", resize);
@@ -820,6 +860,7 @@ async function initReferenceMotion() {
     ).forEach((trigger) =>
       ["mouseenter", "click"].forEach((type) =>
         trigger.addEventListener(type, () => {
+          if (document.hidden || motionPreference.matches) return;
           const bounds = trigger.getBoundingClientRect(),
             size = bounds.width,
             color = getComputedStyle(trigger).backgroundColor;
@@ -831,7 +872,6 @@ async function initReferenceMotion() {
               x: bounds.x + (size * 2) / 3 + (i * size) / 14,
               y:
                 bounds.y +
-                scrollY +
                 bounds.height -
                 (size * 2) / 3 -
                 ((size / 7) * 3) / 4 +
@@ -846,12 +886,16 @@ async function initReferenceMotion() {
               spin: (Math.random() * Math.PI * 2) / 60,
             });
           }
+          if (!frame) frame = requestAnimationFrame(tick);
         }),
       ),
     );
     function tick(time) {
-      frame = requestAnimationFrame(tick);
-      if (time - last < 1000 / 60) return;
+      frame = 0;
+      if (time - last < 1000 / 60) {
+        if (crumbs.length) frame = requestAnimationFrame(tick);
+        return;
+      }
       last = time;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (let index = crumbs.length - 1; index >= 0; index--) {
@@ -880,9 +924,21 @@ async function initReferenceMotion() {
         ctx.fill();
         ctx.restore();
       }
+      if (crumbs.length) frame = requestAnimationFrame(tick);
     }
-    frame = requestAnimationFrame(tick);
-    addEventListener("pagehide", () => cancelAnimationFrame(frame), {
+    const stopParticles = () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      if (crumbs.length) ctx.clearRect(0, 0, canvas.width, canvas.height);
+      crumbs.length = 0;
+    };
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) stopParticles();
+    });
+    motionPreference.addEventListener("change", () => {
+      if (motionPreference.matches) stopParticles();
+    });
+    addEventListener("pagehide", stopParticles, {
       once: true,
     });
   }

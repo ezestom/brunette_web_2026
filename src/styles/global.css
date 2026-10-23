@@ -1739,6 +1739,17 @@ small,
 }
 [data-sileo-toast] {
   font-family: var(--text-font, sans-serif) !important;
-  box-shadow: 0 16px 40px rgba(28, 53, 44, 0.22) !important;
 }
-
+/* The generic svg rule is for icons, not Sileo's full notification canvas. */
+[data-sileo-svg] {
+  width: var(--sileo-width);
+  height: auto;
+  filter: drop-shadow(0 8px 20px rgba(28, 53, 44, 0.2));
+}
+.reference-site
+  [data-sileo-viewport]
+  :is([data-sileo-title], [data-sileo-description]) {
+  color: var(--beige);
+  text-transform: none;
+  line-height: 1.4;
+}

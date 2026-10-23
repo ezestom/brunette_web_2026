@@ -2,7 +2,13 @@ import type { Product } from "../lib/types.ts";
 import { MENU_PHOTOS } from "./menu-photos.ts";
 
 export interface MenuSection {
-  id: "bebidas-calientes" | "bebidas-frias" | "tortas" | "dulces" | "salados";
+  id:
+    | "cookies"
+    | "bebidas-calientes"
+    | "bebidas-frias"
+    | "tortas"
+    | "dulces"
+    | "salados";
   number: string;
   name: string;
   subtitle: string;
@@ -58,36 +64,42 @@ export function menuProduct(item: MenuItem): Product {
 
 export const MENU_SECTIONS: MenuSection[] = [
   {
-    id: "bebidas-calientes",
+    id: "cookies",
     number: "01",
-    name: "Bebidas Calientes",
-    subtitle: "Cafetería de especialidad y tés en hebras seleccionados.",
-  },
-  {
-    id: "bebidas-frias",
-    number: "02",
-    name: "Bebidas Frías",
-    subtitle: "Iced coffee, limonadas caseras, smoothies y jugos naturales.",
+    name: "Cookies",
+    subtitle: "Antojos del mostrador para compartir. O no.",
   },
   {
     id: "tortas",
-    number: "03",
+    number: "02",
     name: "Tortas",
     subtitle: "Porciones del mostrador elaboradas artesanalmente.",
     badge: "Consultar disponibilidad",
   },
   {
     id: "dulces",
-    number: "04",
+    number: "03",
     name: "Dulces",
     subtitle: "Alfajores artesanales, budines, hojaldres, rolls y cuadrados.",
   },
   {
     id: "salados",
-    number: "05",
+    number: "04",
     name: "Salados",
     subtitle:
       "Tostados en pan de campo o árabe, scons de queso y bocados salados.",
+  },
+  {
+    id: "bebidas-frias",
+    number: "05",
+    name: "Bebidas Frías",
+    subtitle: "Iced coffee, limonadas caseras, smoothies y jugos naturales.",
+  },
+  {
+    id: "bebidas-calientes",
+    number: "06",
+    name: "Bebidas Calientes",
+    subtitle: "Cafetería de especialidad y tés en hebras seleccionados.",
   },
 ];
 
