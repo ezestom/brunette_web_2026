@@ -704,7 +704,24 @@ html.has-modal {
 }
 .reference-site .Menu_Drawer {
   overflow-y: auto;
+  overflow-x: hidden;
+  height: 100dvh;
+  overscroll-behavior: contain;
   touch-action: pan-y;
+  background: var(--dark);
+  /* Clip the panel itself: an oversized background adds phantom scroll space. */
+  clip-path: circle(0% at 100% 0);
+  transition: clip-path 0.8s var(--ulu-curve) 0.4s;
+}
+.reference-site .Menu_Drawer.open {
+  clip-path: circle(150% at 100% 0);
+  transition-delay: 0s;
+}
+.reference-site .Menu_Drawer::before {
+  content: none;
+}
+.reference-site .Menu_Drawer > div {
+  flex-shrink: 0;
 }
 .reference-site header {
   transition: padding 0.3s ease;
@@ -1018,13 +1035,16 @@ html:root {
   display: block;
   text-transform: none;
 }
+.reference-site .site_logo.brand-wordmark .brand-title {
+  font-size: 2.875rem;
+}
 .reference-site .site_logo.brand-wordmark .brand-title .brand-italic,
 .reference-site .Menu_Drawer .Logo.brand-wordmark .brand-title .brand-italic {
   font-style: italic;
 }
 .reference-site .site_logo.brand-wordmark .brand-tagline {
   font-family: var(--title-font);
-  font-size: 0.64rem;
+  font-size: 0.72rem;
   font-weight: 400;
   letter-spacing: 0.04em;
   display: block;
@@ -1057,10 +1077,10 @@ html:root {
     height: 48px;
   }
   .reference-site .site_logo.brand-wordmark .brand-title {
-    font-size: 1.95rem;
+    font-size: 2.25rem;
   }
   .reference-site .site_logo.brand-wordmark .brand-tagline {
-    font-size: 0.54rem;
+    font-size: 0.62rem;
     margin-top: 3px;
   }
 }
@@ -1180,6 +1200,66 @@ html:root {
   }
   .reference-site footer.SectionPadded {
     padding-top: 1.5rem;
+    min-height: 0;
+  }
+  .reference-site .Hero_Float_Inner {
+    width: 7.5rem;
+    height: 7.5rem;
+    padding: 1rem;
+    font-size: 1rem;
+    text-align: center;
+  }
+  .reference-site .Footer_Top {
+    gap: 1.25rem;
+  }
+  .reference-site .Footer_Infos,
+  .reference-site .Footer_Menu,
+  .reference-site .Footer_Newsletter {
+    margin-top: 0;
+    font-size: 1rem;
+  }
+  .reference-site .Footer_Infos .Footer_Logo_Badge {
+    width: 56px;
+    height: 56px;
+  }
+  .reference-site .Footer_Infos p {
+    margin: 0.5rem 0;
+  }
+  .reference-site .Footer_Infos p br {
+    display: none;
+  }
+  .reference-site .Footer_Socials {
+    margin-top: 0.75rem;
+    font-size: 1.1rem;
+  }
+  .reference-site .Footer_Menu li a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    margin-top: 0;
+    font-size: 1.2rem;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  .reference-site .Footer_Newsletter h3 {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  .reference-site .Footer_Newsletter p {
+    margin: 0.75rem 0;
+    line-height: 1.5;
+  }
+  .reference-site .Footer_Bottom {
+    padding-top: 0.75rem;
+    font-size: 0.8rem;
+  }
+  .reference-site .Footer_Bottom > div {
+    margin-top: 0.75rem;
+  }
+  .reference-site .Footer_Casa {
+    margin-bottom: 0.75rem;
   }
   .reference-site .Footer_Big_Logo_Text.brunette-wordmark {
     line-height: 1;
