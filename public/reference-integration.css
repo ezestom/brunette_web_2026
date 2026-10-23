@@ -161,6 +161,14 @@ html.lenis body {
 .reference-site .Collection_Display_Item {
   min-width: 0;
 }
+.reference-site .Collection_Display_Item .Product_Item_Image,
+.reference-site .Collection_Display_Item .Product_Item_Second_Image {
+  border-radius: 500px 500px 1.5rem 1.5rem;
+}
+/* The gallery clips its own track; the parallax heading must remain visible. */
+.reference-site .Arches_Display_Section {
+  overflow: visible;
+}
 .reference-site .Product_Item .Quantity_Selector input {
   padding: 0;
   line-height: 1;
@@ -1036,7 +1044,7 @@ html:root {
   text-transform: none;
 }
 .reference-site .site_logo.brand-wordmark .brand-title {
-  font-size: 2.875rem;
+  font-size: 3.25rem;
 }
 .reference-site .site_logo.brand-wordmark .brand-title .brand-italic,
 .reference-site .Menu_Drawer .Logo.brand-wordmark .brand-title .brand-italic {
@@ -1044,7 +1052,7 @@ html:root {
 }
 .reference-site .site_logo.brand-wordmark .brand-tagline {
   font-family: var(--title-font);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 400;
   letter-spacing: 0.04em;
   display: block;
@@ -1077,10 +1085,10 @@ html:root {
     height: 48px;
   }
   .reference-site .site_logo.brand-wordmark .brand-title {
-    font-size: 2.25rem;
+    font-size: 2.6rem;
   }
   .reference-site .site_logo.brand-wordmark .brand-tagline {
-    font-size: 0.62rem;
+    font-size: 0.7rem;
     margin-top: 3px;
   }
 }
@@ -1091,6 +1099,36 @@ html:root {
   object-fit: cover;
   display: block;
   margin-bottom: 0.75rem;
+}
+.reference-site .Footer_Delivery {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.reference-site .Footer_Delivery button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 88px;
+  height: 44px;
+  padding: 8px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--beige);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+.reference-site .Footer_Delivery button:hover {
+  transform: translateY(-2px);
+}
+.reference-site .Footer_Delivery button:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 4px;
+}
+.reference-site .Footer_Delivery img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 .reference-site footer {
   overflow: hidden;
@@ -1197,6 +1235,17 @@ html:root {
   }
   .reference-site .Footer_Middle {
     padding-top: 2rem;
+  }
+  .reference-site .Testimonial {
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+  }
+  .reference-site .Testimonial_Logo {
+    width: 100%;
+    height: auto;
+    min-height: 5rem;
+    margin-top: auto;
   }
   .reference-site footer.SectionPadded {
     padding-top: 1.5rem;
