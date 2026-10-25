@@ -2,7 +2,7 @@
 import ReferenceArches from "./ReferenceArches.astro";
 import ReferenceProduct from "./ReferenceProduct.astro";
 import ReferenceBrowser from "./ReferenceBrowser.astro";
-import ReferenceServices from "./ReferenceServices.astro";
+import ReferenceSocial from "./ReferenceSocial.astro";
 import type { Content } from "../../lib/types";
 interface Props {
   content: Content;
@@ -129,7 +129,7 @@ const { home, products, settings } = content;
 <ReferenceArches content={content} />
 
 <ReferenceBrowser content={content} />
-<ReferenceServices content={content} />
+<ReferenceSocial content={content} />
 <section class="Section Collections_CTA_Section Parallax_Wrapper SectionPadded">
   <div
     class="Collections_CTA_Heading Centered Parallax_Front"

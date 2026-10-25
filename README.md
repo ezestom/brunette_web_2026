@@ -268,3 +268,18 @@ adaptador fija `path-to-regexp` 6.3.0 mediante `overrides` para usar la versión
 corregida dentro de la misma versión mayor.
 
 # brunette_web_2026
+
+## Medios de la sección de redes
+
+El home reemplaza las tarjetas informativas por un carrusel radial. Usa las
+fotos y videos locales declarados en `src/data/social-media.ts` mientras
+`home.socialMedia` esté vacío. Este campo opcional
+acepta hasta 18 elementos `{ type: "video" | "image", src, poster?, alt?, href? }`.
+`src` y `poster` pueden ser archivos de `/assets/`, `/media/`,
+`/social_media_photos/`, `/social_media_videos/` o URLs HTTPS directas.
+Los enlaces a publicaciones de Instagram van en `href`; un enlace a un reel
+no reemplaza al archivo MP4/WebM en `src`. El carrusel alterna clips y fotos,
+usa las fotos como posters cuando falta uno, y reproduce únicamente videos
+visibles, sin sonido. La pausa y la preferencia de movimiento reducido detienen
+la reproducción. Los medios se configuran en el contenido; todavía no tienen
+un editor específico en el panel.

@@ -82,6 +82,14 @@ export interface HomeContent {
   contactText?: string;
   contactImage?: string;
   gallery?: string[];
+  /** Direct video/image assets for the alternating social carousel. */
+  socialMedia?: {
+    type: "image" | "video";
+    src: string;
+    poster?: string;
+    alt?: string;
+    href?: string;
+  }[];
   heroTitle: string;
   heroSubtitle: string;
   heroImage: string;

@@ -1,0 +1,386 @@
+---
+import type { Content } from "../../lib/types";
+import { socialMedia } from "../../data/social-media";
+interface Props {
+  content: Content;
+}
+const { content } = Astro.props;
+const configured = content.home.socialMedia?.length
+  ? content.home.socialMedia
+  : socialMedia;
+const photos = (
+  content.home.gallery?.length
+    ? content.home.gallery
+    : content.products.map((product) => product.image)
+).filter(Boolean);
+const fallback: NonNullable<Content["home"]["socialMedia"]> = photos
+  .slice(0, 8)
+  .map((src) => ({
+    type: "image" as const,
+    src,
+    alt: `Un antojo de ${content.settings.name}`,
+  }));
+const videos = configured.filter((item) => item.type === "video");
+const images = configured.filter((item) => item.type === "image");
+const stills = images.length ? images : fallback;
+// Alternate real clips and photos; never substitute unrelated stock videos.
+const media =
+  videos.length && stills.length
+    ? Array.from(
+        { length: Math.max(videos.length, stills.length) },
+        (_, index) => [
+          videos[index % videos.length],
+          stills[index % stills.length],
+        ],
+      ).flat()
+    : configured.length
+      ? configured
+      : fallback;
+const cards = Array.from({ length: media.length ? 36 : 0 }, (_, index) => ({
+  ...media[index % media.length],
+  duplicate: index >= media.length,
+}));
+const brandReferences = [
+  { name: "La Paulina", style: "paulina" },
+  { name: "La Serenísima", style: "serenisima" },
+  { name: "Milkaut", style: "milkaut" },
+  { name: "Callebaut", style: "callebaut" },
+  { name: "Puratos", style: "puratos" },
+  { name: "Águila", style: "aguila" },
+  { name: "Valrhona", style: "valrhona" },
+  { name: "Fleischmann", style: "fleischmann" },
+];
+---
+
+{cards.length > 0 && (
+  <section
+    class="social-section"
+    data-social-marquee
+    aria-label="Brunette en redes"
+  >
+    <div class="social-heading">
+      <h2>Brunette, de cerca.</h2>
+      <div class="social-actions">
+        <button
+          type="button"
+          data-social-pause
+          aria-pressed="false"
+          aria-label="Pausar carrusel"
+        >
+          <span data-social-pause-label>Pausar</span>
+        </button>
+      </div>
+    </div>
+    <div class="social-stage">
+      <div class="social-orbit">
+        <div class="social-ring">
+          {cards.map((item, index) => (
+            <a
+              class="social-card"
+              style={`--card-index:${index}`}
+              href={item.href || content.settings.instagram}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`${item.alt || content.settings.name} · Ver en Instagram`}
+              aria-hidden={item.duplicate ? "true" : undefined}
+              tabindex={item.duplicate ? -1 : 0}
+              data-social-duplicate={item.duplicate ? "true" : undefined}
+            >
+              {item.type === "video" ? (
+                <video
+                  data-src={item.src}
+                  poster={
+                    item.poster ||
+                    stills[Math.floor(index / 2) % stills.length]?.src
+                  }
+                  muted
+                  loop
+                  playsinline
+                  preload="none"
+                  aria-hidden="true"
+                />
+              ) : (
+                <img
+                  src={item.src}
+                  alt={item.alt || ""}
+                  width="450"
+                  height="800"
+                  loading="lazy"
+                  decoding="async"
+                />
+              )}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+    <div
+      class="social-brands"
+      aria-label="Marcas de referencia, selección de muestra"
+    >
+      <p>La calidad también está en los detalles.</p>
+      <ul>
+        {brandReferences.map((brand) => (
+          <li>
+            <span class:list={["brand-reference", brand.style]}>
+              {brand.name}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <small>Marcas de referencia · Selección de muestra</small>
+    </div>
+  </section>
+)}
+
+<style>
+  .social-section {
+    --card-width: clamp(240px, 25vw, 420px);
+    --radius: clamp(1250px, 180vw, 4200px);
+    --card-step: 10deg;
+    --social-surface: color-mix(in srgb, var(--pink) 12%, var(--beige));
+    padding-block: 4rem;
+    background: linear-gradient(
+      to bottom,
+      var(--beige),
+      var(--social-surface) 18%,
+      var(--social-surface) 78%,
+      var(--beige)
+    );
+    color: var(--dark);
+  }
+  .social-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 1.5rem;
+    padding: 0 4vw;
+    font-family: var(--title-font);
+  }
+  h2 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 4rem);
+    line-height: 1.05;
+  }
+  .social-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  button {
+    padding: 0.75rem 1rem;
+    min-height: 44px;
+    border: 1px solid currentColor;
+    border-radius: 100px;
+    color: inherit;
+    background: transparent;
+    font: inherit;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  button:hover {
+    background: var(--dark);
+    color: var(--beige);
+  }
+  :is(a, button):focus-visible {
+    outline: 3px solid var(--pink);
+    outline-offset: 5px;
+  }
+  .social-stage {
+    position: relative;
+    height: var(--stage-height, clamp(550px, 60vw, 1200px));
+    overflow: clip;
+    margin-top: 1rem;
+  }
+  .social-orbit {
+    position: absolute;
+    width: calc(var(--radius) * 2);
+    height: calc(var(--radius) * 2);
+    top: calc(var(--card-width) * 5 / 6 + 32px);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .social-ring {
+    position: absolute;
+    inset: 0;
+  }
+  .social-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--card-width);
+    aspect-ratio: 3 / 5;
+    border-radius: 1rem;
+    overflow: hidden;
+    background: var(--dark);
+    box-shadow: 0 12px 28px rgb(28 53 44 / 12%);
+    transform: translate(-50%, -50%)
+      rotate(calc(var(--card-index) * var(--card-step)))
+      translateY(calc(-1 * var(--radius)));
+  }
+  .social-card :is(img, video) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+  }
+  .social-brands {
+    position: relative;
+    max-width: 920px;
+    margin: calc(
+        -1 *
+          min(
+            15rem,
+            max(
+              0px,
+              var(--stage-height, 0px) - var(--card-width) * 5 / 3 - 64px
+            )
+          )
+      )
+      auto 0;
+    padding: 0 2rem 2rem;
+    text-align: center;
+    font-family: var(--title-font);
+  }
+  .social-brands p {
+    margin: 0 0 2.5rem;
+    font-size: 1.15rem;
+    line-height: 1.4;
+  }
+  .social-brands ul {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2.5rem 2rem;
+    align-items: center;
+  }
+  .social-brands li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 48px;
+  }
+  .brand-reference {
+    display: block;
+    font-size: clamp(1.15rem, 2vw, 1.75rem);
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+  .paulina {
+    font-family: Georgia, serif;
+    font-style: italic;
+    font-weight: 700;
+  }
+  .serenisima {
+    font-family: "Brunette Serif", Georgia, serif;
+    font-style: italic;
+    font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+  }
+  .milkaut {
+    font-family: Georgia, serif;
+    font-weight: 700;
+    letter-spacing: -0.06em;
+  }
+  .callebaut {
+    font-family: Georgia, serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: clamp(1rem, 1.6vw, 1.3rem);
+    letter-spacing: 0.04em;
+  }
+  .puratos {
+    font-style: italic;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+  .aguila {
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .valrhona {
+    font-family: Georgia, serif;
+    font-size: clamp(1rem, 1.7vw, 1.4rem);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .fleischmann {
+    font-family: Georgia, serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+  }
+  .social-brands small {
+    display: block;
+    margin-top: 2.5rem;
+    font-size: 0.8rem;
+    opacity: 0.65;
+    line-height: 1.4;
+  }
+  .social-section[data-reduced-motion] .social-brands {
+    margin-top: 1rem;
+  }
+  .social-section[data-reduced-motion] .social-stage {
+    height: auto;
+    overflow-x: auto;
+    padding: 2rem 4vw;
+  }
+  .social-section[data-reduced-motion] :is(.social-orbit, .social-ring) {
+    position: static;
+    width: auto;
+    height: auto;
+    transform: none;
+  }
+  .social-section[data-reduced-motion] .social-ring {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .social-section[data-reduced-motion] .social-card {
+    position: relative;
+    top: auto;
+    left: auto;
+    flex-shrink: 0;
+    transform: none;
+  }
+  .social-section[data-reduced-motion] [data-social-duplicate] {
+    display: none;
+  }
+  .social-section[data-reduced-motion] [data-social-pause] {
+    display: none;
+  }
+  @media (max-width: 768px) {
+    .social-section {
+      --card-width: 210px;
+      --radius: 650px;
+      --card-step: 20deg;
+    }
+    .social-heading {
+      align-items: start;
+      flex-direction: column;
+    }
+    .social-actions {
+      justify-content: flex-end;
+      width: 100%;
+      gap: 1rem;
+    }
+    .social-card:nth-child(n + 19) {
+      display: none;
+    }
+    .social-brands {
+      margin-top: 0;
+    }
+    .social-brands ul {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+    .social-brands p {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+</style>
+
+<script>
+  import { initSocialMarquees } from "../../scripts/social-marquee";
+  initSocialMarquees();
+</script>

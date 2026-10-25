@@ -21,6 +21,14 @@ const image = text(500).refine(
   (v) => !v || /^\/(?:assets|media)\/[a-zA-Z0-9_.-]+$/.test(v),
   "Subí una imagen desde el panel.",
 );
+const socialAsset = text(1000).refine(
+  (value) =>
+    /^\/(?:assets|media|social_media_photos|social_media_videos)\/[a-zA-Z0-9_-][a-zA-Z0-9_.-]*$/.test(
+      value,
+    ) ||
+    (/^https:\/\//.test(value) && URL.canParse(value)),
+  "Usá un archivo de medios local o un enlace https://.",
+);
 const hours = z
   .array(
     z
@@ -81,6 +89,18 @@ export const contentSchema = z
       contactText: text(1000).default(""),
       contactImage: image.default("/assets/Two_Food_Photograhers-74100a5d.jpg"),
       gallery: z.array(image).max(24).default([]),
+      socialMedia: z
+        .array(
+          z.object({
+            type: z.enum(["image", "video"]),
+            src: socialAsset,
+            poster: socialAsset.optional(),
+            alt: text(300).optional(),
+            href: url.optional(),
+          }),
+        )
+        .max(18)
+        .optional(),
       heroTitle: text(150).min(1),
       heroSubtitle: text(500),
       heroImage: image,
